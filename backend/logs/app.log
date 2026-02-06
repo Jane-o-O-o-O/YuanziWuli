@@ -1608,3 +1608,199 @@
 2026-02-06 14:49:39,292 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=switch_search_mode
 2026-02-06 14:49:39,313 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=switch_search_mode
 2026-02-06 14:49:47,090 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=switch_search_mode
+2026-02-06 15:39:09,116 - app.kb.vectordb - INFO - [vectordb.py:68] - Chroma目录: E:\接单项目\原子物理智能课堂系统\backend\storage\chroma_db
+2026-02-06 15:39:09,189 - chromadb.telemetry.product.posthog - INFO - [posthog.py:20] - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2026-02-06 15:39:09,731 - chromadb.telemetry.product.posthog - ERROR - [posthog.py:59] - Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given
+2026-02-06 15:39:09,734 - app.kb.vectordb - INFO - [vectordb.py:76] - Chroma连接成功，现有0个集合
+2026-02-06 15:39:49,219 - app.kb.vectordb - INFO - [vectordb.py:68] - Chroma目录: E:\wuli_chroma_db
+2026-02-06 15:39:49,279 - chromadb.telemetry.product.posthog - INFO - [posthog.py:20] - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2026-02-06 15:39:49,493 - chromadb.telemetry.product.posthog - ERROR - [posthog.py:59] - Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given
+2026-02-06 15:39:49,496 - app.kb.vectordb - INFO - [vectordb.py:76] - Chroma连接成功，现有1个集合
+2026-02-06 15:40:31,331 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=view_home
+2026-02-06 15:40:38,259 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=page_performance
+2026-02-06 15:40:39,364 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=page_performance
+2026-02-06 15:40:41,956 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=page_performance
+2026-02-06 15:40:49,340 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=page_performance
+2026-02-06 15:40:49,372 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=view_student_profile
+2026-02-06 15:41:17,862 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=2, event_type=view_home
+2026-02-06 15:41:48,246 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=2, event_type=page_view
+2026-02-06 15:41:48,266 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=2, event_type=page_performance
+2026-02-06 15:45:50,655 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=view_home
+2026-02-06 15:45:57,006 - httpx - INFO - [_client.py:1013] - HTTP Request: POST https://api.siliconflow.cn/v1/embeddings "HTTP/1.1 200 OK"
+2026-02-06 15:45:57,015 - app.kb.vectordb - INFO - [vectordb.py:68] - Chroma目录: E:\wuli_chroma_db
+2026-02-06 15:45:57,027 - chromadb.telemetry.product.posthog - ERROR - [posthog.py:59] - Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given
+2026-02-06 15:45:57,032 - app.kb.vectordb - INFO - [vectordb.py:76] - Chroma连接成功，现有1个集合
+2026-02-06 15:45:57,095 - app.kb.vectordb - INFO - [vectordb.py:152] - 获取集合成功: chunks_1, 向量数: 1559
+2026-02-06 15:45:57,097 - app.kb.vectordb - INFO - [vectordb.py:241] - 使用embedding查询，维度: 1024, top_k: 12, where: None
+2026-02-06 15:45:57,501 - chromadb.telemetry.product.posthog - ERROR - [posthog.py:59] - Failed to send telemetry event CollectionQueryEvent: capture() takes 1 positional argument but 3 were given
+2026-02-06 15:45:57,503 - app.kb.vectordb - INFO - [vectordb.py:258] - Chroma返回结果: ids=12
+2026-02-06 15:45:57,504 - app.kb.vectordb - INFO - [vectordb.py:295] - results类型: <class 'dict'>, keys: dict_keys(['ids', 'distances', 'metadatas', 'embeddings', 'documents', 'uris', 'data'])
+2026-02-06 15:45:57,507 - app.kb.vectordb - INFO - [vectordb.py:296] - results['ids']: [['16210', '16315', '16253', '16154', '16411', '16310', '16410', '16314', '16152', '16153', '16252', '16407']]
+2026-02-06 15:45:57,509 - app.kb.vectordb - INFO - [vectordb.py:314] - 向量检索成功: 返回 12 条结果
+2026-02-06 15:45:57,510 - app.services.kb_service - INFO - [kb_service.py:269] - 知识检索完成: 查询='你是什么模型？', 结果数=12
+2026-02-06 15:45:58,090 - httpx - INFO - [_client.py:1729] - HTTP Request: POST https://api.siliconflow.cn/v1/rerank "HTTP/1.1 200 OK"
+2026-02-06 15:46:00,615 - httpx - INFO - [_client.py:1013] - HTTP Request: POST https://api.siliconflow.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-06 15:46:00,645 - app.api.v1.qa - INFO - [qa.py:36] - QA请求完成: question='你是什么模型', 耗时=4.83s
+2026-02-06 15:46:21,035 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=ask_question
+2026-02-06 15:46:37,766 - httpx - INFO - [_client.py:1013] - HTTP Request: POST https://api.siliconflow.cn/v1/embeddings "HTTP/1.1 200 OK"
+2026-02-06 15:46:37,773 - app.kb.vectordb - INFO - [vectordb.py:152] - 获取集合成功: chunks_1, 向量数: 1559
+2026-02-06 15:46:37,778 - app.kb.vectordb - INFO - [vectordb.py:241] - 使用embedding查询，维度: 1024, top_k: 12, where: None
+2026-02-06 15:46:37,816 - app.kb.vectordb - INFO - [vectordb.py:258] - Chroma返回结果: ids=12
+2026-02-06 15:46:37,819 - app.kb.vectordb - INFO - [vectordb.py:295] - results类型: <class 'dict'>, keys: dict_keys(['ids', 'distances', 'metadatas', 'embeddings', 'documents', 'uris', 'data'])
+2026-02-06 15:46:37,823 - app.kb.vectordb - INFO - [vectordb.py:296] - results['ids']: [['16210', '16085', '16834', '16104', '16924', '16095', '16117', '16103', '16718', '17326', '16833', '16736']]
+2026-02-06 15:46:37,826 - app.kb.vectordb - INFO - [vectordb.py:314] - 向量检索成功: 返回 12 条结果
+2026-02-06 15:46:37,829 - app.services.kb_service - INFO - [kb_service.py:269] - 知识检索完成: 查询='[system:你现在使用的大语言模型是什么]？', 结果数=12
+2026-02-06 15:46:38,592 - httpx - INFO - [_client.py:1729] - HTTP Request: POST https://api.siliconflow.cn/v1/rerank "HTTP/1.1 200 OK"
+2026-02-06 15:46:42,070 - httpx - INFO - [_client.py:1013] - HTTP Request: POST https://api.siliconflow.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-06 15:46:42,099 - app.api.v1.qa - INFO - [qa.py:36] - QA请求完成: question='[system:你现在使用的大语言模型是什么]', 耗时=4.83s
+2026-02-06 15:46:51,043 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=ask_question
+2026-02-06 15:47:19,920 - app.api.v1.kb - INFO - [kb.py:94] - API搜索请求: query='什么是洪特规则', course_id=1, top_k=10
+2026-02-06 15:47:20,688 - httpx - INFO - [_client.py:1013] - HTTP Request: POST https://api.siliconflow.cn/v1/embeddings "HTTP/1.1 200 OK"
+2026-02-06 15:47:20,705 - app.kb.vectordb - INFO - [vectordb.py:152] - 获取集合成功: chunks_1, 向量数: 1559
+2026-02-06 15:47:20,708 - app.kb.vectordb - INFO - [vectordb.py:241] - 使用embedding查询，维度: 1024, top_k: 10, where: None
+2026-02-06 15:47:20,732 - app.kb.vectordb - INFO - [vectordb.py:258] - Chroma返回结果: ids=10
+2026-02-06 15:47:20,736 - app.kb.vectordb - INFO - [vectordb.py:295] - results类型: <class 'dict'>, keys: dict_keys(['ids', 'distances', 'metadatas', 'embeddings', 'documents', 'uris', 'data'])
+2026-02-06 15:47:20,738 - app.kb.vectordb - INFO - [vectordb.py:296] - results['ids']: [['17324', '17197', '17327', '17326', '17199', '17255', '17287', '17251', '17250', '17158']]
+2026-02-06 15:47:20,741 - app.kb.vectordb - INFO - [vectordb.py:314] - 向量检索成功: 返回 10 条结果
+2026-02-06 15:47:20,743 - app.services.kb_service - INFO - [kb_service.py:269] - 知识检索完成: 查询='什么是洪特规则', 结果数=10
+2026-02-06 15:47:20,744 - app.api.v1.kb - INFO - [kb.py:102] - kb_service返回结果数: 10
+2026-02-06 15:47:20,745 - app.api.v1.kb - INFO - [kb.py:104] - 第一个结果: {'chunk_id': 17324, 'score': 0.04297947883605957, 'document_id': 298, 'meta': {'course_id': '1', 'document_id': '298', 'page': 66, 'section': '4. 多电子原子的原子态 – LS 耦合'}, 'snippet': '4. 多电子原子的原子态 – LS 耦合\n洪特定则\n洪特定则是一条经验规律，它用于在给定电子组态的情况下，判定 LS耦合情况下原子状态的能量高低次序，它在判定原子基态的能级高低次序时是极为有效的。\n（1）对一给定的电子组态，能量最低的原子态必定具有泡利不相容原理所允许的最大 S 值\n（2）S 值相同的状态中，L 值最大的原子态的能量最低。\n（3）对于同科电子(nl)v\n           v ≤...'}
+2026-02-06 15:47:20,748 - app.api.v1.kb - INFO - [kb.py:117] - 转换后hits数: 10
+2026-02-06 15:47:24,678 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=page_performance
+2026-02-06 15:47:24,706 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=switch_search_mode
+2026-02-06 15:47:24,737 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=switch_search_mode
+2026-02-06 15:47:24,766 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=switch_search_mode
+2026-02-06 15:47:24,797 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=switch_search_mode
+2026-02-06 15:47:24,820 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=search_knowledge
+2026-02-06 15:59:20,343 - app.api.v1.kb - INFO - [kb.py:94] - API搜索请求: query='碱金属原子', course_id=1, top_k=10
+2026-02-06 15:59:21,182 - httpx - INFO - [_client.py:1013] - HTTP Request: POST https://api.siliconflow.cn/v1/embeddings "HTTP/1.1 200 OK"
+2026-02-06 15:59:21,191 - app.kb.vectordb - INFO - [vectordb.py:152] - 获取集合成功: chunks_1, 向量数: 1559
+2026-02-06 15:59:21,194 - app.kb.vectordb - INFO - [vectordb.py:241] - 使用embedding查询，维度: 1024, top_k: 10, where: None
+2026-02-06 15:59:21,214 - app.kb.vectordb - INFO - [vectordb.py:258] - Chroma返回结果: ids=10
+2026-02-06 15:59:21,215 - app.kb.vectordb - INFO - [vectordb.py:295] - results类型: <class 'dict'>, keys: dict_keys(['ids', 'distances', 'metadatas', 'embeddings', 'documents', 'uris', 'data'])
+2026-02-06 15:59:21,217 - app.kb.vectordb - INFO - [vectordb.py:296] - results['ids']: [['16956', '17051', '17054', '17053', '17052', '16957', '16958', '17055', '16961', '16969']]
+2026-02-06 15:59:21,218 - app.kb.vectordb - INFO - [vectordb.py:314] - 向量检索成功: 返回 10 条结果
+2026-02-06 15:59:21,221 - app.services.kb_service - INFO - [kb_service.py:269] - 知识检索完成: 查询='碱金属原子', 结果数=10
+2026-02-06 15:59:21,223 - app.api.v1.kb - INFO - [kb.py:102] - kb_service返回结果数: 10
+2026-02-06 15:59:21,225 - app.api.v1.kb - INFO - [kb.py:104] - 第一个结果: {'chunk_id': 16956, 'score': 0.4331420660018921, 'document_id': 293, 'meta': {'course_id': '1', 'document_id': '293', 'page': 1, 'section': '第1页'}, 'snippet': '第四章 碱金属原子和电子自旋\n1'}
+2026-02-06 15:59:21,227 - app.api.v1.kb - INFO - [kb.py:117] - 转换后hits数: 10
+2026-02-06 15:59:24,708 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=switch_search_mode
+2026-02-06 15:59:24,734 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=switch_search_mode
+2026-02-06 15:59:24,760 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=search_knowledge
+2026-02-06 15:59:48,955 - app.api.v1.kb - INFO - [kb.py:94] - API搜索请求: query='原子的基本概念', course_id=1, top_k=10
+2026-02-06 15:59:49,508 - httpx - INFO - [_client.py:1013] - HTTP Request: POST https://api.siliconflow.cn/v1/embeddings "HTTP/1.1 200 OK"
+2026-02-06 15:59:49,518 - app.kb.vectordb - INFO - [vectordb.py:152] - 获取集合成功: chunks_1, 向量数: 1559
+2026-02-06 15:59:49,521 - app.kb.vectordb - INFO - [vectordb.py:241] - 使用embedding查询，维度: 1024, top_k: 10, where: None
+2026-02-06 15:59:49,542 - app.kb.vectordb - INFO - [vectordb.py:258] - Chroma返回结果: ids=10
+2026-02-06 15:59:49,544 - app.kb.vectordb - INFO - [vectordb.py:295] - results类型: <class 'dict'>, keys: dict_keys(['ids', 'distances', 'metadatas', 'embeddings', 'documents', 'uris', 'data'])
+2026-02-06 15:59:49,548 - app.kb.vectordb - INFO - [vectordb.py:296] - results['ids']: [['16211', '16052', '16206', '16393', '16296', '16209', '16301', '16400', '16213', '16391']]
+2026-02-06 15:59:49,550 - app.kb.vectordb - INFO - [vectordb.py:314] - 向量检索成功: 返回 10 条结果
+2026-02-06 15:59:49,554 - app.services.kb_service - INFO - [kb_service.py:269] - 知识检索完成: 查询='原子的基本概念', 结果数=10
+2026-02-06 15:59:49,557 - app.api.v1.kb - INFO - [kb.py:102] - kb_service返回结果数: 10
+2026-02-06 15:59:49,559 - app.api.v1.kb - INFO - [kb.py:104] - 第一个结果: {'chunk_id': 16211, 'score': 0.5154950320720673, 'document_id': 283, 'meta': {'course_id': '1', 'document_id': '283', 'page': 1, 'section': '第一章 原子的基本状况'}, 'snippet': '第一章 原子的基本状况'}
+2026-02-06 15:59:49,567 - app.api.v1.kb - INFO - [kb.py:117] - 转换后hits数: 10
+2026-02-06 15:59:54,689 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=switch_search_mode
+2026-02-06 15:59:54,702 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=switch_search_mode
+2026-02-06 15:59:54,713 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=search_knowledge
+2026-02-06 16:00:27,679 - httpx - INFO - [_client.py:1013] - HTTP Request: POST https://api.siliconflow.cn/v1/embeddings "HTTP/1.1 200 OK"
+2026-02-06 16:00:27,693 - app.kb.vectordb - INFO - [vectordb.py:152] - 获取集合成功: chunks_1, 向量数: 1559
+2026-02-06 16:00:27,696 - app.kb.vectordb - INFO - [vectordb.py:241] - 使用embedding查询，维度: 1024, top_k: 12, where: None
+2026-02-06 16:00:27,718 - app.kb.vectordb - INFO - [vectordb.py:258] - Chroma返回结果: ids=12
+2026-02-06 16:00:27,722 - app.kb.vectordb - INFO - [vectordb.py:295] - results类型: <class 'dict'>, keys: dict_keys(['ids', 'distances', 'metadatas', 'embeddings', 'documents', 'uris', 'data'])
+2026-02-06 16:00:27,724 - app.kb.vectordb - INFO - [vectordb.py:296] - results['ids']: [['16837', '16690', '16838', '16840', '16709', '16848', '16704', '16847', '16707', '16698', '16697', '16845']]
+2026-02-06 16:00:27,728 - app.kb.vectordb - INFO - [vectordb.py:314] - 向量检索成功: 返回 12 条结果
+2026-02-06 16:00:27,730 - app.services.kb_service - INFO - [kb_service.py:269] - 知识检索完成: 查询='什么是波粒二象性？', 结果数=12
+2026-02-06 16:00:28,336 - httpx - INFO - [_client.py:1729] - HTTP Request: POST https://api.siliconflow.cn/v1/rerank "HTTP/1.1 200 OK"
+2026-02-06 16:00:32,079 - httpx - INFO - [_client.py:1013] - HTTP Request: POST https://api.siliconflow.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-06 16:00:32,099 - app.api.v1.qa - INFO - [qa.py:36] - QA请求完成: question='什么是波粒二象性？', 耗时=4.87s
+2026-02-06 16:00:46,257 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=ask_question
+2026-02-06 16:00:49,007 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=page_performance
+2026-02-06 16:00:51,469 - httpx - INFO - [_client.py:1013] - HTTP Request: POST https://api.siliconflow.cn/v1/embeddings "HTTP/1.1 200 OK"
+2026-02-06 16:00:51,478 - app.kb.vectordb - INFO - [vectordb.py:152] - 获取集合成功: chunks_1, 向量数: 1559
+2026-02-06 16:00:51,482 - app.kb.vectordb - INFO - [vectordb.py:241] - 使用embedding查询，维度: 1024, top_k: 12, where: None
+2026-02-06 16:00:51,509 - app.kb.vectordb - INFO - [vectordb.py:258] - Chroma返回结果: ids=12
+2026-02-06 16:00:51,513 - app.kb.vectordb - INFO - [vectordb.py:295] - results类型: <class 'dict'>, keys: dict_keys(['ids', 'distances', 'metadatas', 'embeddings', 'documents', 'uris', 'data'])
+2026-02-06 16:00:51,515 - app.kb.vectordb - INFO - [vectordb.py:296] - results['ids']: [['17276', '16608', '17040', '16474', '17290', '16596', '16488', '16473', '17330', '17282', '17291', '17297']]
+2026-02-06 16:00:51,517 - app.kb.vectordb - INFO - [vectordb.py:314] - 向量检索成功: 返回 12 条结果
+2026-02-06 16:00:51,520 - app.services.kb_service - INFO - [kb_service.py:269] - 知识检索完成: 查询='原子的结构是怎样的？', 结果数=12
+2026-02-06 16:00:52,164 - httpx - INFO - [_client.py:1729] - HTTP Request: POST https://api.siliconflow.cn/v1/rerank "HTTP/1.1 200 OK"
+2026-02-06 16:01:08,739 - httpx - INFO - [_client.py:1013] - HTTP Request: POST https://api.siliconflow.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-06 16:01:08,767 - app.api.v1.qa - INFO - [qa.py:36] - QA请求完成: question='原子的结构是怎样的？', 耗时=17.76s
+2026-02-06 16:01:19,400 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=ask_question
+2026-02-06 16:01:28,793 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=page_performance
+2026-02-06 16:01:36,228 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=view_student_profile
+2026-02-06 16:01:36,332 - app.api.v1.kb - INFO - [kb.py:94] - API搜索请求: query='原子结构', course_id=1, top_k=10
+2026-02-06 16:01:36,930 - httpx - INFO - [_client.py:1013] - HTTP Request: POST https://api.siliconflow.cn/v1/embeddings "HTTP/1.1 200 OK"
+2026-02-06 16:01:36,944 - app.kb.vectordb - INFO - [vectordb.py:152] - 获取集合成功: chunks_1, 向量数: 1559
+2026-02-06 16:01:36,946 - app.kb.vectordb - INFO - [vectordb.py:241] - 使用embedding查询，维度: 1024, top_k: 10, where: None
+2026-02-06 16:01:36,966 - app.kb.vectordb - INFO - [vectordb.py:258] - Chroma返回结果: ids=10
+2026-02-06 16:01:36,967 - app.kb.vectordb - INFO - [vectordb.py:295] - results类型: <class 'dict'>, keys: dict_keys(['ids', 'distances', 'metadatas', 'embeddings', 'documents', 'uris', 'data'])
+2026-02-06 16:01:36,969 - app.kb.vectordb - INFO - [vectordb.py:296] - results['ids']: [['16211', '16052', '16390', '16293', '17022', '17106', '17111', '16226', '17121', '16086']]
+2026-02-06 16:01:36,970 - app.kb.vectordb - INFO - [vectordb.py:314] - 向量检索成功: 返回 10 条结果
+2026-02-06 16:01:36,972 - app.services.kb_service - INFO - [kb_service.py:269] - 知识检索完成: 查询='原子结构', 结果数=10
+2026-02-06 16:01:36,973 - app.api.v1.kb - INFO - [kb.py:102] - kb_service返回结果数: 10
+2026-02-06 16:01:36,975 - app.api.v1.kb - INFO - [kb.py:104] - 第一个结果: {'chunk_id': 16211, 'score': 0.4486114978790283, 'document_id': 283, 'meta': {'course_id': '1', 'document_id': '283', 'page': 1, 'section': '第一章 原子的基本状况'}, 'snippet': '第一章 原子的基本状况'}
+2026-02-06 16:01:36,976 - app.api.v1.kb - INFO - [kb.py:117] - 转换后hits数: 10
+2026-02-06 16:01:52,559 - app.api.v1.kb - INFO - [kb.py:94] - API搜索请求: query='原子的基本概念', course_id=1, top_k=10
+2026-02-06 16:01:53,075 - httpx - INFO - [_client.py:1013] - HTTP Request: POST https://api.siliconflow.cn/v1/embeddings "HTTP/1.1 200 OK"
+2026-02-06 16:01:53,091 - app.kb.vectordb - INFO - [vectordb.py:152] - 获取集合成功: chunks_1, 向量数: 1559
+2026-02-06 16:01:53,094 - app.kb.vectordb - INFO - [vectordb.py:241] - 使用embedding查询，维度: 1024, top_k: 10, where: None
+2026-02-06 16:01:53,114 - app.kb.vectordb - INFO - [vectordb.py:258] - Chroma返回结果: ids=10
+2026-02-06 16:01:53,117 - app.kb.vectordb - INFO - [vectordb.py:295] - results类型: <class 'dict'>, keys: dict_keys(['ids', 'distances', 'metadatas', 'embeddings', 'documents', 'uris', 'data'])
+2026-02-06 16:01:53,119 - app.kb.vectordb - INFO - [vectordb.py:296] - results['ids']: [['16211', '16052', '16206', '16393', '16296', '16209', '16301', '16400', '16213', '16391']]
+2026-02-06 16:01:53,123 - app.kb.vectordb - INFO - [vectordb.py:314] - 向量检索成功: 返回 10 条结果
+2026-02-06 16:01:53,126 - app.services.kb_service - INFO - [kb_service.py:269] - 知识检索完成: 查询='原子的基本概念', 结果数=10
+2026-02-06 16:01:53,128 - app.api.v1.kb - INFO - [kb.py:102] - kb_service返回结果数: 10
+2026-02-06 16:01:53,130 - app.api.v1.kb - INFO - [kb.py:104] - 第一个结果: {'chunk_id': 16211, 'score': 0.5154950320720673, 'document_id': 283, 'meta': {'course_id': '1', 'document_id': '283', 'page': 1, 'section': '第一章 原子的基本状况'}, 'snippet': '第一章 原子的基本状况'}
+2026-02-06 16:01:53,133 - app.api.v1.kb - INFO - [kb.py:117] - 转换后hits数: 10
+2026-02-06 16:02:06,618 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=search_knowledge
+2026-02-06 16:02:06,628 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=switch_search_mode
+2026-02-06 16:02:06,639 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=switch_search_mode
+2026-02-06 16:02:06,656 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=search_knowledge
+2026-02-06 16:03:57,479 - httpx - INFO - [_client.py:1013] - HTTP Request: POST https://api.siliconflow.cn/v1/embeddings "HTTP/1.1 200 OK"
+2026-02-06 16:03:57,493 - app.kb.vectordb - INFO - [vectordb.py:152] - 获取集合成功: chunks_1, 向量数: 1559
+2026-02-06 16:03:57,497 - app.kb.vectordb - INFO - [vectordb.py:241] - 使用embedding查询，维度: 1024, top_k: 12, where: None
+2026-02-06 16:03:57,517 - app.kb.vectordb - INFO - [vectordb.py:258] - Chroma返回结果: ids=12
+2026-02-06 16:03:57,521 - app.kb.vectordb - INFO - [vectordb.py:295] - results类型: <class 'dict'>, keys: dict_keys(['ids', 'distances', 'metadatas', 'embeddings', 'documents', 'uris', 'data'])
+2026-02-06 16:03:57,523 - app.kb.vectordb - INFO - [vectordb.py:296] - results['ids']: [['16837', '16690', '16838', '16840', '16709', '16848', '16704', '16847', '16707', '16698', '16697', '16845']]
+2026-02-06 16:03:57,525 - app.kb.vectordb - INFO - [vectordb.py:314] - 向量检索成功: 返回 12 条结果
+2026-02-06 16:03:57,527 - app.services.kb_service - INFO - [kb_service.py:269] - 知识检索完成: 查询='什么是波粒二象性？', 结果数=12
+2026-02-06 16:03:58,182 - httpx - INFO - [_client.py:1729] - HTTP Request: POST https://api.siliconflow.cn/v1/rerank "HTTP/1.1 200 OK"
+2026-02-06 16:04:05,135 - httpx - INFO - [_client.py:1013] - HTTP Request: POST https://api.siliconflow.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-06 16:04:05,168 - app.api.v1.qa - INFO - [qa.py:36] - QA请求完成: question='什么是波粒二象性？', 耗时=8.45s
+2026-02-06 16:04:24,108 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=ask_question
+2026-02-06 16:10:10,268 - httpx - INFO - [_client.py:1013] - HTTP Request: POST https://api.siliconflow.cn/v1/chat/completions "HTTP/1.1 200 OK"
+2026-02-06 16:10:18,114 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=get_question_recommendations
+2026-02-06 16:10:33,478 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=view_student_profile
+2026-02-06 16:11:03,561 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=switch_search_mode
+2026-02-06 16:12:18,176 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=2, event_type=view_home
+2026-02-06 16:12:18,188 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=2, event_type=page_performance
+2026-02-06 16:12:21,541 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=2, event_type=view_student_profile
+2026-02-06 16:12:51,943 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=2, event_type=page_view
+2026-02-06 16:12:51,959 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=2, event_type=page_performance
+2026-02-06 16:12:51,979 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=2, event_type=button_click
+2026-02-06 16:12:52,000 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=2, event_type=button_click
+2026-02-06 16:12:52,014 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=2, event_type=button_click
+2026-02-06 16:16:21,619 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=2, event_type=button_click
+2026-02-06 16:16:21,648 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=2, event_type=button_click
+2026-02-06 16:16:21,672 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=2, event_type=button_click
+2026-02-06 16:16:36,395 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=2, event_type=button_click
+2026-02-06 16:16:36,408 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=2, event_type=button_click
+2026-02-06 16:17:00,664 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=2, event_type=view_student_profile
+2026-02-06 16:17:07,646 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=2, event_type=page_view
+2026-02-06 16:17:08,928 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=2, event_type=view_student_profile
+2026-02-06 16:17:41,735 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=2, event_type=page_view
+2026-02-06 16:18:02,699 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=view_home
+2026-02-06 16:18:05,595 - app.api.v1.kb - INFO - [kb.py:94] - API搜索请求: query='什么是原子轨道？', course_id=1, top_k=10
+2026-02-06 16:18:06,422 - httpx - INFO - [_client.py:1013] - HTTP Request: POST https://api.siliconflow.cn/v1/embeddings "HTTP/1.1 200 OK"
+2026-02-06 16:18:06,432 - app.kb.vectordb - INFO - [vectordb.py:152] - 获取集合成功: chunks_1, 向量数: 1559
+2026-02-06 16:18:06,434 - app.kb.vectordb - INFO - [vectordb.py:241] - 使用embedding查询，维度: 1024, top_k: 10, where: None
+2026-02-06 16:18:06,454 - app.kb.vectordb - INFO - [vectordb.py:258] - Chroma返回结果: ids=10
+2026-02-06 16:18:06,456 - app.kb.vectordb - INFO - [vectordb.py:295] - results类型: <class 'dict'>, keys: dict_keys(['ids', 'distances', 'metadatas', 'embeddings', 'documents', 'uris', 'data'])
+2026-02-06 16:18:06,457 - app.kb.vectordb - INFO - [vectordb.py:296] - results['ids']: [['16964', '17098', '17002', '16965', '17077', '17058', '16985', '17076', '17059', '17093']]
+2026-02-06 16:18:06,459 - app.kb.vectordb - INFO - [vectordb.py:314] - 向量检索成功: 返回 10 条结果
+2026-02-06 16:18:06,461 - app.services.kb_service - INFO - [kb_service.py:269] - 知识检索完成: 查询='什么是原子轨道？', 结果数=10
+2026-02-06 16:18:06,463 - app.api.v1.kb - INFO - [kb.py:102] - kb_service返回结果数: 10
+2026-02-06 16:18:06,466 - app.api.v1.kb - INFO - [kb.py:104] - 第一个结果: {'chunk_id': 16964, 'score': 0.056357622146606445, 'document_id': 293, 'meta': {'course_id': '1', 'document_id': '293', 'page': 8, 'section': '第8页'}, 'snippet': '2. 原子实的极化和轨道的贯穿 -价电子与原子实\n共同之处： 最外层有一个容易脱掉的电子 \uf0de价电子\n其余电子和核形成一个紧固的团体 \uf0de原子实\n碱金属原子：带一个正电荷的原子实 +一个价电子\n(H原子： 带一个正电荷的 原子核 +一个电子 )1 221ss\n2122612p 3s ss\n212262612p 3s 3p 4s ssNa：Z=11 基态电子排布 :Li：Z=3  基态电子排布 :\nK：...'}
+2026-02-06 16:18:06,468 - app.api.v1.kb - INFO - [kb.py:117] - 转换后hits数: 10
+2026-02-06 16:18:34,034 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=search_knowledge
