@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>知识检索 - 原子物理智能课堂系统</title>
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/layout.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚛️</text></svg>">
+    <style>
+        /* 搜索页面特定样式 */
+        .search-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .search-box {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            padding: var(--space-2xl);
+            box-shadow: var(--shadow-lg);
+            margin-bottom: var(--space-2xl);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .search-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-main), var(--accent-gold), var(--primary-main));
+        }
+
+        .search-form {
+            display: flex;
+            gap: var(--space-md);
+            align-items: flex-end;
+        }
+
+        .search-input-group {
+            flex: 1;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: var(--space-lg);
+            border: 2px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            font-size: 1rem;
+            transition: all var(--transition-normal);
+            background: var(--bg-primary);
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+            background: white;
+        }
+
+        .search-button {
+            min-width: 120px;
+            height: 56px;
+            border-radius: var(--radius-lg);
+        }
+
+        .search-filters {
+            display: flex;
+            gap: var(--space-md);
+            margin-top: var(--space-lg);
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .filter-select {
+            padding: var(--space-sm) var(--space-md);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            background: var(--bg-primary);
+            font-size: 0.875rem;
+        }
+
+        /* 用户区域样式 */
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.6rem 1.2rem;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border: 1px solid rgba(45, 90, 71, 0.1);
+            border-radius: 20px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(45, 90, 71, 0.08);
+        }
+
+        .user-section:hover {
+            background: linear-gradient(135deg, #ffffff 0%, #faf8f5 100%);
+            border-color: var(--accent-gold);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.15);
+        }
+
+        .user-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-main) 0%, var(--primary-light) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.3rem;
+            box-shadow: 0 3px 10px rgba(45, 90, 71, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .user-avatar::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s;
+            opacity: 0;
+        }
+
+        .user-section:hover .user-avatar::before {
+            opacity: 1;
+            transform: rotate(45deg) translate(50%, 50%);
+        }
+
+        .user-section:hover .user-avatar {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(45, 90, 71, 0.4);
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .username {
+            font-weight: 600;
+            color: var(--primary-dark);
+            font-size: 0.95rem;
+            line-height: 1.2;
+        }
+
+        .user-role {
+            font-size: 0.8rem;
+            color: #6c757d;
+            background: linear-gradient(135deg, rgba(45, 90, 71, 0.1) 0%, rgba(45, 90, 71, 0.05) 100%);
+            padding: 0.3rem 0.6rem;
+            border-radius: 10px;
+            font-weight: 500;
+            border: 1px solid rgba(45, 90, 71, 0.1);
+        }
+
+        .user-section .btn-ghost {
+            background: transparent;
+            border: 1px solid rgba(45, 90, 71, 0.2);
+            color: var(--primary-dark);
+            padding: 0.5rem 1.2rem;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .user-section .btn-ghost::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(45, 90, 71, 0.1), transparent);
+            transition: left 0.4s;
+        }
+
+        .user-section .btn-ghost:hover::before {
+            left: 100%;
+        }
+
+        .user-section .btn-ghost:hover {
+            background: linear-gradient(135deg, var(--primary-main) 0%, var(--primary-light) 100%);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(45, 90, 71, 0.3);
+        }
+
+        .results-container {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+        }
+
+        .results-header {
+            padding: var(--space-xl);
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .results-count {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .results-sort {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .results-list {
+            padding: var(--space-lg);
+        }
+
+        .result-item {
+            padding: var(--space-xl);
+            border-bottom: 1px solid var(--border-light);
+            transition: all var(--transition-normal);
+            position: relative;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-item:hover {
+            background: var(--bg-secondary);
+            transform: translateX(4px);
+        }
+
+        .result-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 0;
+            background: var(--accent-gold);
+            transition: width var(--transition-normal);
+        }
+
+        .result-item:hover::before {
+            width: 4px;
+        }
+
+        .result-title {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: var(--space-sm);
+            line-height: 1.4;
+        }
+
+        .result-snippet {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: var(--space-md);
+        }
+
+        .result-meta {
+            display: flex;
+            gap: var(--space-lg);
+            align-items: center;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .result-score {
+            background: var(--primary-main);
+            color: white;
+            padding: var(--space-xs) var(--space-sm);
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .result-source {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+
+        .highlight {
+            background: var(--accent-gold);
+            color: var(--primary-dark);
+            padding: 0.125em 0.25em;
+            border-radius: var(--radius-sm);
+            font-weight: 500;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: var(--space-3xl);
+            color: var(--text-muted);
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: var(--space-lg);
+            opacity: 0.5;
+        }
+
+        .suggested-searches {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-sm);
+            justify-content: center;
+            margin-top: var(--space-xl);
+        }
+
+        .suggested-search {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-full);
+            padding: var(--space-sm) var(--space-md);
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .suggested-search:hover {
+            background: var(--primary-main);
+            color: white;
+            border-color: var(--primary-main);
+            transform: translateY(-2px);
+        }
+
+        .loading-results {
+            text-align: center;
+            padding: var(--space-3xl);
+        }
+
+        .loading-skeleton {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            height: 20px;
+            margin-bottom: var(--space-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loading-skeleton::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.4),
+                transparent
+            );
+            animation: shimmer 1.5s infinite;
+        }
+
+        .skeleton-title { width: 70%; height: 24px; }
+        .skeleton-text { width: 100%; }
+        .skeleton-short { width: 40%; }
+
+        /* 模式切换标签 */
+        .mode-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            background: rgba(248, 249, 250, 0.8);
+            padding: 0.5rem;
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+        }
+
+        .mode-tab {
+            flex: 1;
+            padding: 1rem 2rem;
+            border: none;
+            background: transparent;
+            color: #6c757d;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .mode-tab:hover {
+            color: #495057;
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .mode-tab.active {
+            color: #ffffff;
+            background: linear-gradient(135deg, var(--primary-main) 0%, var(--primary-light) 100%);
+            box-shadow: 0 4px 15px rgba(45, 90, 71, 0.3);
+        }
+
+        .mode-content {
+            display: none;
+        }
+
+        .mode-content.active {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        /* 知识点目录样式 */
+        .browse-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .knowledge-catalog {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            border: 1px solid rgba(45, 90, 71, 0.1);
+        }
+
+        .catalog-header {
+            padding: 2.5rem 2rem;
+            background: linear-gradient(135deg, var(--primary-main) 0%, var(--primary-light) 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .catalog-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.08'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3Ccircle cx='10' cy='10' r='3'/%3E%3Ccircle cx='50' cy='10' r='3'/%3E%3Ccircle cx='10' cy='50' r='3'/%3E%3Ccircle cx='50' cy='50' r='3'/%3E%3C/g%3E%3C/svg%3E") repeat;
+            opacity: 0.6;
+        }
+
+        .catalog-header > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .catalog-header h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0 0 0.5rem 0;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .catalog-header p {
+            margin: 0;
+            opacity: 0.95;
+            font-size: 1rem;
+        }
+
+        .catalog-chapters {
+            padding: 1.5rem;
+        }
+
+        .chapter-item {
+            margin-bottom: 1rem;
+            border-radius: 12px;
+            overflow: hidden;
+            background: white;
+            border: 1px solid rgba(45, 90, 71, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .chapter-item:hover {
+            box-shadow: 0 4px 16px rgba(45, 90, 71, 0.1);
+        }
+
+        .chapter-header {
+            padding: 1.25rem 1.5rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .chapter-header:hover {
+            background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+        }
+
+        .chapter-header.active {
+            background: linear-gradient(135deg, var(--primary-main) 0%, var(--primary-light) 100%);
+            color: white;
+        }
+
+        .chapter-icon {
+            font-size: 0.875rem;
+            transition: transform 0.3s ease;
+            display: inline-block;
+        }
+
+        .chapter-header.active .chapter-icon {
+            transform: rotate(90deg);
+        }
+
+        .chapter-title {
+            flex: 1;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .chapter-count {
+            font-size: 0.875rem;
+            opacity: 0.8;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+        }
+
+        .chapter-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+            background: white;
+        }
+
+        .chapter-content.active {
+            max-height: 2000px;
+        }
+
+        .knowledge-item {
+            padding: 1rem 1.5rem 1rem 3rem;
+            border-bottom: 1px solid rgba(45, 90, 71, 0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .knowledge-item:last-child {
+            border-bottom: none;
+        }
+
+        .knowledge-item:hover {
+            background: linear-gradient(135deg, rgba(45, 90, 71, 0.05) 0%, rgba(45, 90, 71, 0.02) 100%);
+            padding-left: 3.5rem;
+        }
+
+        .kp-icon {
+            font-size: 1rem;
+        }
+
+        .kp-title {
+            font-weight: 500;
+            color: var(--primary-dark);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .search-form {
+                flex-direction: column;
+                gap: var(--space-md);
+            }
+            
+            .search-button {
+                width: 100%;
+            }
+            
+            .search-filters {
+                flex-direction: column;
+                gap: var(--space-sm);
+            }
+            
+            .results-header {
+                flex-direction: column;
+                gap: var(--space-md);
+                align-items: flex-start;
+            }
+            
+            .result-meta {
+                flex-direction: column;
+                gap: var(--space-sm);
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 导航栏 -->
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-brand">
+                    <h1><a href="../index.html" style="color: inherit;">⚛️ 原子物理智能课堂</a></h1>
+                </div>
+                <div class="nav-menu">
+                    <a href="search.html" class="nav-link active">知识检索</a>
+                    <a href="qa.html" class="nav-link">智能问答</a>
+                    <a href="recommend.html" class="nav-link">学习推荐</a>
+                    <a href="profile.html" class="nav-link">学情分析</a>
+                    <a href="teacher.html" class="nav-link teacher-only" style="display: none;">教师端</a>
+                </div>
+                <div class="nav-user">
+                    <!-- 未登录状态 -->
+                    <div id="login-section" class="login-section">
+                        <button id="login-btn" class="btn btn-primary btn-sm">🔐 登录</button>
+                    </div>
+                    
+                    <!-- 已登录状态 -->
+                    <div id="user-section" class="user-section" style="display: none;">
+                        <div class="user-avatar" id="user-avatar">
+                            <span id="avatar-text">U</span>
+                        </div>
+                        <div class="user-info">
+                            <span id="username" class="username">用户名</span>
+                            <span id="user-role" class="user-role">学生</span>
+                        </div>
+                        <button id="logout-btn" class="btn btn-ghost btn-sm">退出</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- 主要内容区域 -->
+        <main class="main-content">
+            <div class="container">
+                <div class="page-header">
+                    <h1 class="page-title">知识检索系统</h1>
+                    <p class="page-subtitle">快速搜索原子物理学相关知识点，获取精准的概念解释和理论阐述</p>
+                </div>
+
+                <div class="search-container">
+                    <!-- 模式切换标签 -->
+                    <div class="mode-tabs">
+                        <button class="mode-tab active" data-mode="search">搜索模式</button>
+                        <button class="mode-tab" data-mode="browse">浏览模式</button>
+                    </div>
+
+                    <!-- 搜索模式 -->
+                    <div id="search-mode" class="mode-content active">
+                        <!-- 搜索框 -->
+                        <div class="search-box">
+                        <form id="search-form" class="search-form">
+                            <div class="search-input-group">
+                                <input type="text" id="search-input" class="search-input" 
+                                       placeholder="请输入您要搜索的内容，例如：波粒二象性、原子轨道..." 
+                                       required>
+                            </div>
+                            <button type="submit" class="btn btn-primary search-button">
+                                <span class="search-text">搜索</span>
+                                <span class="loading" style="display: none;"></span>
+                            </button>
+                        </form>
+                        
+                        <div class="search-filters">
+                            <div class="filter-group">
+                                <label for="top-k">结果数量:</label>
+                                <select id="top-k" class="filter-select">
+                                    <option value="5">5个结果</option>
+                                    <option value="10" selected>10个结果</option>
+                                    <option value="20">20个结果</option>
+                                    <option value="50">50个结果</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="sort-by">排序方式:</label>
+                                <select id="sort-by" class="filter-select">
+                                    <option value="relevance" selected>相关性</option>
+                                    <option value="date">时间</option>
+                                    <option value="score">评分</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 搜索结果 -->
+                    <div class="results-container" id="results-container" style="display: none;">
+                        <div class="results-header">
+                            <div class="results-count" id="results-count">
+                                找到 0 个相关结果
+                            </div>
+                            <div class="results-sort">
+                                <span>搜索用时: <span id="search-time">0</span>ms</span>
+                            </div>
+                        </div>
+                        <div class="results-list" id="results-list">
+                            <!-- 搜索结果将在这里显示 -->
+                        </div>
+                    </div>
+
+                    <!-- 空状态 -->
+                    <div class="empty-state" id="empty-state">
+                        <p>输入关键词搜索原子物理学相关内容，发现知识的奥秘</p>
+                        <div class="suggested-searches">
+                            <span class="suggested-search" onclick="performSearch('波粒二象性')">波粒二象性</span>
+                            <span class="suggested-search" onclick="performSearch('原子结构')">原子结构</span>
+                            <span class="suggested-search" onclick="performSearch('量子数')">量子数</span>
+                            <span class="suggested-search" onclick="performSearch('原子轨道')">原子轨道</span>
+                            <span class="suggested-search" onclick="performSearch('电子自旋')">电子自旋</span>
+                            <span class="suggested-search" onclick="performSearch('薛定谔方程')">薛定谔方程</span>
+                            <span class="suggested-search" onclick="performSearch('量子力学')">量子力学</span>
+                            <span class="suggested-search" onclick="performSearch('原子光谱')">原子光谱</span>
+                        </div>
+                    </div>
+
+                    <!-- 加载状态 -->
+                    <div class="loading-results" id="loading-results" style="display: none;">
+                        <div class="loading-spinner"></div>
+                        <p class="loading-text">正在搜索知识库...</p>
+                        
+                        <!-- 骨架屏 -->
+                        <div style="margin-top: 2rem;">
+                            <div class="loading-skeleton skeleton-title"></div>
+                            <div class="loading-skeleton skeleton-text"></div>
+                            <div class="loading-skeleton skeleton-short"></div>
+                            <br>
+                            <div class="loading-skeleton skeleton-title"></div>
+                            <div class="loading-skeleton skeleton-text"></div>
+                            <div class="loading-skeleton skeleton-short"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 浏览模式 -->
+                <div id="browse-mode" class="mode-content">
+                    <div class="browse-container">
+                        <!-- 知识点目录 -->
+                        <div class="knowledge-catalog">
+                            <div class="catalog-header">
+                                <h3>📖 原子物理学知识体系</h3>
+                                <p>按章节浏览所有知识点</p>
+                            </div>
+                            
+                            <div class="catalog-chapters">
+                                <!-- 第1章 -->
+                                <div class="chapter-item">
+                                    <div class="chapter-header" onclick="toggleChapter(this)">
+                                        <span class="chapter-icon">▶</span>
+                                        <span class="chapter-title">第1章 原子的基本状况</span>
+                                        <span class="chapter-count">12个知识点</span>
+                                    </div>
+                                    <div class="chapter-content">
+                                        <div class="knowledge-item" onclick="viewKnowledge('原子的基本概念')">
+                                            <span class="kp-icon">📌</span>
+                                            <span class="kp-title">原子的基本概念</span>
+                                        </div>
+                                        <div class="knowledge-item" onclick="viewKnowledge('原子的组成')">
+                                            <span class="kp-icon">📌</span>
+                                            <span class="kp-title">原子的组成</span>
+                                        </div>
+                                        <div class="knowledge-item" onclick="viewKnowledge('原子核')">
+                                            <span class="kp-icon">📌</span>
+                                            <span class="kp-title">原子核</span>
+                                        </div>
+                                        <div class="knowledge-item" onclick="viewKnowledge('电子云')">
+                                            <span class="kp-icon">📌</span>
+                                            <span class="kp-title">电子云</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 第2章 -->
+                                <div class="chapter-item">
+                                    <div class="chapter-header" onclick="toggleChapter(this)">
+                                        <span class="chapter-icon">▶</span>
+                                        <span class="chapter-title">第2章 原子的能级和辐射</span>
+                                        <span class="chapter-count">15个知识点</span>
+                                    </div>
+                                    <div class="chapter-content">
+                                        <div class="knowledge-item" onclick="viewKnowledge('能级概念')">
+                                            <span class="kp-icon">📌</span>
+                                            <span class="kp-title">能级概念</span>
+                                        </div>
+                                        <div class="knowledge-item" onclick="viewKnowledge('原子光谱')">
+                                            <span class="kp-icon">📌</span>
+                                            <span class="kp-title">原子光谱</span>
+                                        </div>
+                                        <div class="knowledge-item" onclick="viewKnowledge('玻尔理论')">
+                                            <span class="kp-icon">📌</span>
+                                            <span class="kp-title">玻尔理论</span>
+                                        </div>
+                                        <div class="knowledge-item" onclick="viewKnowledge('氢原子光谱')">
+                                            <span class="kp-icon">📌</span>
+                                            <span class="kp-title">氢原子光谱</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 第3章 -->
+                                <div class="chapter-item">
+                                    <div class="chapter-header" onclick="toggleChapter(this)">
+                                        <span class="chapter-icon">▶</span>
+                                        <span class="chapter-title">第3章 量子力学初步</span>
+                                        <span class="chapter-count">18个知识点</span>
+                                    </div>
+                                    <div class="chapter-content">
+                                        <div class="knowledge-item" onclick="viewKnowledge('波粒二象性')">
+                                            <span class="kp-icon">📌</span>
+                                            <span class="kp-title">波粒二象性</span>
+                                        </div>
+                                        <div class="knowledge-item" onclick="viewKnowledge('德布罗意波')">
+                                            <span class="kp-icon">📌</span>
+                                            <span class="kp-title">德布罗意波</span>
+                                        </div>
+                                        <div class="knowledge-item" onclick="viewKnowledge('薛定谔方程')">
+                                            <span class="kp-icon">📌</span>
+                                            <span class="kp-title">薛定谔方程</span>
+                                        </div>
+                                        <div class="knowledge-item" onclick="viewKnowledge('波函数')">
+                                            <span class="kp-icon">📌</span>
+                                            <span class="kp-title">波函数</span>
+                                        </div>
+                                        <div class="knowledge-item" onclick="viewKnowledge('不确定性原理')">
+                                            <span class="kp-icon">📌</span>
+                                            <span class="kp-title">不确定性原理</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 第4章 -->
+                                <div class="chapter-item">
+                                    <div class="chapter-header" onclick="toggleChapter(this)">
+                                        <span class="chapter-icon">▶</span>
+                                        <span class="chapter-title">第4章 碱金属原子和电子自旋</span>
+                                        <span class="chapter-count">10个知识点</span>
+                                    </div>
+                                    <div class="chapter-content">
+                                        <div class="knowledge-item" onclick="viewKnowledge('碱金属原子')">
+                                            <span class="kp-icon">📌</span>
+                                            <span class="kp-title">碱金属原子</span>
+                                        </div>
+                                        <div class="knowledge-item" onclick="viewKnowledge('电子自旋')">
+                                            <span class="kp-icon">📌</span>
+                                            <span class="kp-title">电子自旋</span>
+                                        </div>
+                                        <div class="knowledge-item" onclick="viewKnowledge('自旋量子数')">
+                                            <span class="kp-icon">📌</span>
+                                            <span class="kp-title">自旋量子数</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 第5章 -->
+                                <div class="chapter-item">
+                                    <div class="chapter-header" onclick="toggleChapter(this)">
+                                        <span class="chapter-icon">▶</span>
+                                        <span class="chapter-title">第5章 多电子原子</span>
+                                        <span class="chapter-count">14个知识点</span>
+                                    </div>
+                                    <div class="chapter-content">
+                                        <div class="knowledge-item" onclick="viewKnowledge('泡利不相容原理')">
+                                            <span class="kp-icon">📌</span>
+                                            <span class="kp-title">泡利不相容原理</span>
+                                        </div>
+                                        <div class="knowledge-item" onclick="viewKnowledge('电子组态')">
+                                            <span class="kp-icon">📌</span>
+                                            <span class="kp-title">电子组态</span>
+                                        </div>
+                                        <div class="knowledge-item" onclick="viewKnowledge('洪特规则')">
+                                            <span class="kp-icon">📌</span>
+                                            <span class="kp-title">洪特规则</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 第6章 -->
+                                <div class="chapter-item">
+                                    <div class="chapter-header" onclick="toggleChapter(this)">
+                                        <span class="chapter-icon">▶</span>
+                                        <span class="chapter-title">第6章 外场中的原子</span>
+                                        <span class="chapter-count">11个知识点</span>
+                                    </div>
+                                    <div class="chapter-content">
+                                        <div class="knowledge-item" onclick="viewKnowledge('塞曼效应')">
+                                            <span class="kp-icon">📌</span>
+                                            <span class="kp-title">塞曼效应</span>
+                                        </div>
+                                        <div class="knowledge-item" onclick="viewKnowledge('斯塔克效应')">
+                                            <span class="kp-icon">📌</span>
+                                            <span class="kp-title">斯塔克效应</span>
+                                        </div>
+                                        <div class="knowledge-item" onclick="viewKnowledge('磁场中的原子')">
+                                            <span class="kp-icon">📌</span>
+                                            <span class="kp-title">磁场中的原子</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 第8章 -->
+                                <div class="chapter-item">
+                                    <div class="chapter-header" onclick="toggleChapter(this)">
+                                        <span class="chapter-icon">▶</span>
+                                        <span class="chapter-title">第8章 X射线</span>
+                                        <span class="chapter-count">9个知识点</span>
+                                    </div>
+                                    <div class="chapter-content">
+                                        <div class="knowledge-item" onclick="viewKnowledge('X射线的产生')">
+                                            <span class="kp-icon">📌</span>
+                                            <span class="kp-title">X射线的产生</span>
+                                        </div>
+                                        <div class="knowledge-item" onclick="viewKnowledge('X射线谱')">
+                                            <span class="kp-icon">📌</span>
+                                            <span class="kp-title">X射线谱</span>
+                                        </div>
+                                        <div class="knowledge-item" onclick="viewKnowledge('康普顿效应')">
+                                            <span class="kp-icon">📌</span>
+                                            <span class="kp-title">康普顿效应</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 第10章 -->
+                                <div class="chapter-item">
+                                    <div class="chapter-header" onclick="toggleChapter(this)">
+                                        <span class="chapter-icon">▶</span>
+                                        <span class="chapter-title">第10章 原子核</span>
+                                        <span class="chapter-count">13个知识点</span>
+                                    </div>
+                                    <div class="chapter-content">
+                                        <div class="knowledge-item" onclick="viewKnowledge('原子核的组成')">
+                                            <span class="kp-icon">📌</span>
+                                            <span class="kp-title">原子核的组成</span>
+                                        </div>
+                                        <div class="knowledge-item" onclick="viewKnowledge('核力')">
+                                            <span class="kp-icon">📌</span>
+                                            <span class="kp-title">核力</span>
+                                        </div>
+                                        <div class="knowledge-item" onclick="viewKnowledge('放射性')">
+                                            <span class="kp-icon">📌</span>
+                                            <span class="kp-title">放射性</span>
+                                        </div>
+                                        <div class="knowledge-item" onclick="viewKnowledge('核反应')">
+                                            <span class="kp-icon">📌</span>
+                                            <span class="kp-title">核反应</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 页脚 -->
+        <footer class="footer">
+            <div class="container">
+                <p>&copy; 2026原子物理智能课堂系统 | 探索微观世界，启发科学思维</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- 加载脚本 -->
+    <script src="../assets/js/utils.js?v=4"></script>
+    <script src="../assets/js/api.js?v=4"></script>
+    <script src="../assets/js/modals.js?v=4"></script>
+    <script src="../assets/js/auth.js?v=4"></script>
+    <script src="../assets/js/event.js?v=4"></script>
+
+    <script>
+        let currentCourseId = 1; // 默认课程ID
+        let searchStartTime = 0;
+
+        // 页面初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initAuth();
+            recordEvent('view_search', {});
+            
+            // 绑定模式切换
+            document.querySelectorAll('.mode-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    switchMode(this.dataset.mode);
+                });
+            });
+            
+            // 检查URL参数中是否有搜索查询
+            const urlParams = getUrlParams();
+            if (urlParams.q) {
+                document.getElementById('search-input').value = urlParams.q;
+                performSearch(urlParams.q);
+            }
+            
+            // 检查localStorage中是否有搜索查询
+            const savedQuery = localStorage.getItem('searchQuery');
+            if (savedQuery && !urlParams.q) {
+                document.getElementById('search-input').value = savedQuery;
+                performSearch(savedQuery);
+                localStorage.removeItem('searchQuery');
+            }
+        });
+
+        // 切换模式
+        function switchMode(mode) {
+            // 更新标签状态
+            document.querySelectorAll('.mode-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`[data-mode="${mode}"]`).classList.add('active');
+            
+            // 更新内容显示
+            document.querySelectorAll('.mode-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(`${mode}-mode`).classList.add('active');
+            
+            // 记录事件
+            recordEvent('switch_search_mode', { mode: mode });
+        }
+
+        // 切换章节展开/收起
+        function toggleChapter(header) {
+            const content = header.nextElementSibling;
+            const isActive = header.classList.contains('active');
+            
+            // 关闭所有其他章节
+            document.querySelectorAll('.chapter-header').forEach(h => {
+                h.classList.remove('active');
+                h.nextElementSibling.classList.remove('active');
+            });
+            
+            // 切换当前章节
+            if (!isActive) {
+                header.classList.add('active');
+                content.classList.add('active');
+            }
+        }
+
+        // 查看知识点
+        function viewKnowledge(keyword) {
+            // 切换到搜索模式
+            switchMode('search');
+            
+            // 执行搜索
+            setTimeout(() => {
+                performSearch(keyword);
+            }, 300);
+        }
+
+        // 搜索表单提交
+        document.getElementById('search-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const query = document.getElementById('search-input').value.trim();
+            if (!query) return;
+            
+            performSearch(query);
+        });
+
+        // 执行搜索
+        async function performSearch(query) {
+            const searchInput = document.getElementById('search-input');
+            const emptyState = document.getElementById('empty-state');
+            const loadingResults = document.getElementById('loading-results');
+            const resultsContainer = document.getElementById('results-container');
+            
+            // 更新输入框
+            searchInput.value = query;
+            
+            // 更新URL
+            setUrlParam('q', query);
+            
+            // 显示加载状态
+            emptyState.style.display = 'none';
+            resultsContainer.style.display = 'none';
+            loadingResults.style.display = 'block';
+            
+            searchStartTime = Date.now();
+            
+            try {
+                const topK = parseInt(document.getElementById('top-k').value);
+                const response = await kbAPI.searchKnowledge(query, currentCourseId, topK);
+                
+                console.log('API response:', response);
+                console.log('Response hits:', response.hits);
+                console.log('Hits length:', response.hits ? response.hits.length : 'undefined');
+                
+                const searchTime = Date.now() - searchStartTime;
+                displayResults(response.hits, query, searchTime);
+                
+                // 记录搜索事件
+                recordEvent('search_knowledge', {
+                    query: query,
+                    results_count: response.hits.length,
+                    search_time: searchTime
+                });
+                
+            } catch (error) {
+                console.error('Search error:', error);
+                loadingResults.style.display = 'none';
+                showNoResults(query);
+                handleAPIError(error, '知识检索');
+            }
+        }
+
+        // 显示搜索结果
+        function displayResults(hits, query, searchTime) {
+            console.log('displayResults called with hits:', hits, 'query:', query, 'searchTime:', searchTime);
+            
+            const loadingResults = document.getElementById('loading-results');
+            const resultsContainer = document.getElementById('results-container');
+            const resultsCount = document.getElementById('results-count');
+            const searchTimeSpan = document.getElementById('search-time');
+            const resultsList = document.getElementById('results-list');
+            
+            loadingResults.style.display = 'none';
+            
+            if (!hits || hits.length === 0) {
+                console.log('No hits to display');
+                showNoResults(query);
+                return;
+            }
+            
+            console.log('Displaying', hits.length, 'results');
+            
+            // 更新结果统计
+            resultsCount.textContent = `找到 ${hits.length} 个相关结果`;
+            searchTimeSpan.textContent = searchTime;
+            
+            // 清空结果列表
+            resultsList.innerHTML = '';
+            
+            // 添加结果项
+            hits.forEach((hit, index) => {
+                console.log('Creating result item for hit', index, hit);
+                const resultItem = createResultItem(hit, query, index);
+                resultsList.appendChild(resultItem);
+            });
+            
+            console.log('Setting results container to visible');
+            resultsContainer.style.display = 'block';
+            
+            // 添加动画效果
+            const items = resultsList.querySelectorAll('.result-item');
+            items.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    item.style.transition = 'all 0.4s ease-out';
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        }
+
+        // 创建结果项
+        function createResultItem(hit, query, index) {
+            const item = document.createElement('div');
+            item.className = 'result-item';
+            
+            // 高亮搜索关键词
+            const highlightedSnippet = highlightKeywords(hit.snippet, query);
+            const highlightedTitle = highlightKeywords(`文档片段 ${index + 1}`, query);
+            
+            // 计算相似度百分比
+            const similarityPercent = Math.round(hit.score * 100);
+            
+            item.innerHTML = `
+                <div class="result-title">${highlightedTitle}</div>
+                <div class="result-snippet">${highlightedSnippet}</div>
+                <div class="result-meta">
+                    <div class="result-score">${similarityPercent}% 匹配</div>
+                    <div class="result-source">
+                        <span>文档</span>
+                        <span>文档ID: ${hit.document_id}</span>
+                    </div>
+                    <div class="result-source">
+                        <span>片段</span>
+                        <span>片段ID: ${hit.chunk_id}</span>
+                    </div>
+                </div>
+            `;
+            
+            // 添加点击事件
+            item.addEventListener('click', function() {
+                showResultDetail(hit);
+            });
+            
+            return item;
+        }
+
+        // 高亮关键词
+        function highlightKeywords(text, query) {
+            if (!query) return text;
+            
+            const keywords = query.split(/\s+/).filter(k => k.length > 0);
+            let highlightedText = text;
+            
+            keywords.forEach(keyword => {
+                const regex = new RegExp(`(${keyword})`, 'gi');
+                highlightedText = highlightedText.replace(regex, '<span class="highlight">$1</span>');
+            });
+            
+            return highlightedText;
+        }
+
+        // 显示无结果状态
+        function showNoResults(query) {
+            const resultsContainer = document.getElementById('results-container');
+            const resultsList = document.getElementById('results-list');
+            const resultsCount = document.getElementById('results-count');
+            
+            resultsCount.textContent = '未找到相关结果';
+            resultsList.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-state-icon">无结果</div>
+                    <h3>未找到相关内容</h3>
+                    <p>没有找到与 "${query}" 相关的内容，请尝试其他关键词</p>
+                    <div class="suggested-searches">
+                        <span class="suggested-search" onclick="performSearch('波粒二象性')">波粒二象性</span>
+                        <span class="suggested-search" onclick="performSearch('原子结构')">原子结构</span>
+                        <span class="suggested-search" onclick="performSearch('量子数')">量子数</span>
+                        <span class="suggested-search" onclick="performSearch('原子轨道')">原子轨道</span>
+                    </div>
+                </div>
+            `;
+            
+            resultsContainer.style.display = 'block';
+        }
+
+        // 显示结果详情
+        function showResultDetail(hit) {
+            const modal = document.createElement('div');
+            modal.className = 'modal show';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title">内容详情</h2>
+                        <button class="close" onclick="this.closest('.modal').remove()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div style="margin-bottom: 1rem;">
+                            <strong>相似度:</strong> ${Math.round(hit.score * 100)}%
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <strong>文档ID:</strong> ${hit.document_id}
+                        </div>
+                        <div style="margin-bottom: 1rem;">
+                            <strong>内容:</strong>
+                        </div>
+                        <div style="background: var(--bg-secondary); padding: 1rem; border-radius: var(--radius-md); line-height: 1.6;">
+                            ${hit.snippet}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" onclick="copyToClipboard('${hit.snippet.replace(/'/g, "\\'")}')">复制内容</button>
+                        <button class="btn btn-primary" onclick="this.closest('.modal').remove()">关闭</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+    </script>
+</body>
+</html>

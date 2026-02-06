@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学情分析 - 原子物理智能课堂系统</title>
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/layout.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚛️</text></svg>">
+    <style>
+        /* 学情分析页面特定样式 */
+        .profile-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .profile-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(26, 61, 46, 0.12), 0 4px 16px rgba(26, 61, 46, 0.08);
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(45, 90, 71, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 48px rgba(26, 61, 46, 0.15), 0 6px 20px rgba(26, 61, 46, 0.1);
+        }
+
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-dark) 0%, var(--primary-main) 25%, var(--accent-gold) 50%, var(--primary-light) 75%, var(--primary-dark) 100%);
+            animation: gradient-shift 8s ease infinite;
+        }
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .card-header {
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--primary-main) 0%, var(--primary-light) 100%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.08'%3E%3Ccircle cx='40' cy='40' r='6'/%3E%3Ccircle cx='15' cy='15' r='4'/%3E%3Ccircle cx='65' cy='15' r='4'/%3E%3Ccircle cx='15' cy='65' r='4'/%3E%3Ccircle cx='65' cy='65' r='4'/%3E%3C/g%3E%3C/svg%3E") repeat;
+            opacity: 0.7;
+        }
+
+        .card-header > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: white;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-content {
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        /* 用户区域样式 */
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.6rem 1.2rem;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border: 1px solid rgba(45, 90, 71, 0.1);
+            border-radius: 20px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(45, 90, 71, 0.08);
+        }
+
+        .user-section:hover {
+            background: linear-gradient(135deg, #ffffff 0%, #faf8f5 100%);
+            border-color: var(--accent-gold);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.15);
+        }
+
+        .user-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-main) 0%, var(--primary-light) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.3rem;
+            box-shadow: 0 3px 10px rgba(45, 90, 71, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .user-avatar::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s;
+            opacity: 0;
+        }
+
+        .user-section:hover .user-avatar::before {
+            opacity: 1;
+            transform: rotate(45deg) translate(50%, 50%);
+        }
+
+        .user-section:hover .user-avatar {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(45, 90, 71, 0.4);
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .username {
+            font-weight: 600;
+            color: var(--primary-dark);
+            font-size: 0.95rem;
+            line-height: 1.2;
+        }
+
+        .user-role {
+            font-size: 0.8rem;
+            color: #6c757d;
+            background: linear-gradient(135deg, rgba(45, 90, 71, 0.1) 0%, rgba(45, 90, 71, 0.05) 100%);
+            padding: 0.3rem 0.6rem;
+            border-radius: 10px;
+            font-weight: 500;
+            border: 1px solid rgba(45, 90, 71, 0.1);
+        }
+
+        .user-section .btn-ghost {
+            background: transparent;
+            border: 1px solid rgba(45, 90, 71, 0.2);
+            color: var(--primary-dark);
+            padding: 0.5rem 1.2rem;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .user-section .btn-ghost::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(45, 90, 71, 0.1), transparent);
+            transition: left 0.4s;
+        }
+
+        .user-section .btn-ghost:hover::before {
+            left: 100%;
+        }
+
+        .user-section .btn-ghost:hover {
+            background: linear-gradient(135deg, var(--primary-main) 0%, var(--primary-light) 100%);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(45, 90, 71, 0.3);
+        }
+
+        /* 活跃度统计 */
+        .activity-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 16px;
+            border: 1px solid rgba(45, 90, 71, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-main) 0%, var(--primary-light) 100%);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-item:hover::before {
+            transform: scaleX(1);
+        }
+
+        .stat-item:hover {
+            background: linear-gradient(135deg, var(--primary-main) 0%, var(--primary-light) 100%);
+            color: white;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(45, 90, 71, 0.2);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover .stat-number {
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover .stat-label {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* 风险等级指示器 */
+        .risk-indicator {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border: 1px solid rgba(45, 90, 71, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .risk-indicator:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(45, 90, 71, 0.1);
+        }
+
+        .risk-low {
+            background: linear-gradient(135deg, rgba(39, 174, 96, 0.1) 0%, rgba(39, 174, 96, 0.05) 100%);
+            border: 1px solid rgba(39, 174, 96, 0.2);
+            color: var(--success);
+        }
+
+        .risk-medium {
+            background: linear-gradient(135deg, rgba(243, 156, 18, 0.1) 0%, rgba(243, 156, 18, 0.05) 100%);
+            border: 1px solid rgba(243, 156, 18, 0.2);
+            color: var(--warning);
+        }
+
+        .risk-high {
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.1) 0%, rgba(231, 76, 60, 0.05) 100%);
+            border: 1px solid rgba(231, 76, 60, 0.2);
+            color: var(--error);
+        }
+
+        .risk-icon {
+            font-size: 2rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--primary-main) 0%, var(--primary-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .risk-text {
+            flex: 1;
+        }
+
+        .risk-level {
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .risk-description {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+
+        /* 薄弱知识点 */
+        .weak-points-list {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .weak-points-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .weak-points-list::-webkit-scrollbar-track {
+            background: rgba(45, 90, 71, 0.05);
+            border-radius: 3px;
+        }
+
+        .weak-points-list::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary-main), var(--primary-light));
+            border-radius: 3px;
+        }
+
+        .weak-point-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            border: 1px solid rgba(45, 90, 71, 0.1);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        }
+
+        .weak-point-item:hover {
+            border-color: var(--accent-gold);
+            background: linear-gradient(135deg, #ffffff 0%, #faf8f5 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(212, 175, 55, 0.1);
+        }
+
+        .weak-point-info {
+            flex: 1;
+        }
+
+        .weak-point-name {
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .weak-point-score {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .score-bar {
+            width: 120px;
+            height: 10px;
+            background: rgba(45, 90, 71, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-left: 1rem;
+            position: relative;
+        }
+
+        .score-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--error), var(--warning), var(--success));
+            border-radius: 5px;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .score-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* 建议列表 */
+        .suggestions-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .suggestion-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.25rem;
+            border-left: 4px solid var(--accent-gold);
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 0 12px 12px 0;
+            margin-bottom: 1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .suggestion-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.05), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .suggestion-item:hover::before {
+            opacity: 1;
+        }
+
+        .suggestion-item:hover {
+            background: linear-gradient(135deg, #ffffff 0%, #faf8f5 100%);
+            transform: translateX(8px);
+            box-shadow: 0 4px 16px rgba(212, 175, 55, 0.1);
+        }
+
+        .suggestion-icon {
+            font-size: 1.5rem;
+            margin-top: 0.25rem;
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+
+        .suggestion-text {
+            flex: 1;
+            line-height: 1.6;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        /* 学习进度图表 */
+        .progress-chart {
+            position: relative;
+            height: 200px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 16px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: end;
+            justify-content: space-around;
+            gap: 1rem;
+            border: 1px solid rgba(45, 90, 71, 0.1);
+        }
+
+        .progress-bar {
+            flex: 1;
+            background: rgba(45, 90, 71, 0.1);
+            border-radius: 8px;
+            position: relative;
+            min-height: 20px;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .progress-bar:hover {
+            background: rgba(45, 90, 71, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .progress-fill {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(180deg, var(--primary-light), var(--primary-main));
+            border-radius: 8px;
+            transition: height 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: progress-shimmer 2s infinite;
+        }
+
+        @keyframes progress-shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .progress-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            color: #6c757d;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #6c757d;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 20px;
+            border: 2px dashed #dee2e6;
+            margin: 2rem 0;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.6;
+            background: linear-gradient(135deg, var(--primary-main) 0%, var(--primary-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .empty-state h3 {
+            color: #495057;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state p {
+            color: #6c757d;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .loading-profile {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 20px;
+            border: 1px solid rgba(45, 90, 71, 0.1);
+        }
+
+        .loading-profile .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(45, 90, 71, 0.1);
+            border-top: 4px solid var(--primary-main);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1.5rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-profile .loading-text {
+            color: var(--primary-dark);
+            font-weight: 500;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .activity-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .weak-point-item {
+                flex-direction: column;
+                gap: var(--space-sm);
+            }
+            
+            .score-bar {
+                width: 100%;
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 导航栏 -->
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-brand">
+                    <h1><a href="../index.html" style="color: inherit;">⚛️ 原子物理智能课堂</a></h1>
+                </div>
+                <div class="nav-menu">
+                    <a href="search.html" class="nav-link">知识检索</a>
+                    <a href="qa.html" class="nav-link">智能问答</a>
+                    <a href="recommend.html" class="nav-link">学习推荐</a>
+                    <a href="profile.html" class="nav-link active">学情分析</a>
+                    <a href="teacher.html" class="nav-link teacher-only" style="display: none;">教师端</a>
+                </div>
+                <div class="nav-user">
+                    <!-- 未登录状态 -->
+                    <div id="login-section" class="login-section">
+                        <button id="login-btn" class="btn btn-primary btn-sm">登录</button>
+                    </div>
+                    
+                    <!-- 已登录状态 -->
+                    <div id="user-section" class="user-section" style="display: none;">
+                        <div class="user-avatar" id="user-avatar">
+                            <span id="avatar-text">U</span>
+                        </div>
+                        <div class="user-info">
+                            <span id="username" class="username">用户名</span>
+                            <span id="user-role" class="user-role">学生</span>
+                        </div>
+                        <button id="logout-btn" class="btn btn-ghost btn-sm">退出</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- 主要内容区域 -->
+        <main class="main-content">
+            <div class="container">
+                <div class="page-header">
+                    <h1 class="page-title">学情分析报告</h1>
+                    <p class="page-subtitle">深入了解您的学习状况，发现薄弱环节，制定改进计划</p>
+                </div>
+
+                <div class="profile-container">
+                    <!-- 学习概览 -->
+                    <div class="profile-grid">
+                        <!-- 活跃度统计 -->
+                        <div class="profile-card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <span>统计</span>
+                                    学习活跃度
+                                </h3>
+                            </div>
+                            <div class="card-content">
+                                <div class="activity-stats" id="activity-stats">
+                                    <div class="stat-item">
+                                        <span class="stat-number" id="active-7d">-</span>
+                                        <span class="stat-label">7天活跃</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-number" id="questions-asked">-</span>
+                                        <span class="stat-label">提问次数</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-number" id="searches-made">-</span>
+                                        <span class="stat-label">搜索次数</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-number" id="study-hours">-</span>
+                                        <span class="stat-label">学习时长</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="progress-chart" id="progress-chart">
+                                    <!-- 进度图表将在这里显示 -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 风险评估 -->
+                        <div class="profile-card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <span>评估</span>
+                                    学习风险评估
+                                </h3>
+                            </div>
+                            <div class="card-content">
+                                <div class="risk-indicator" id="risk-indicator">
+                                    <div class="risk-icon">分析</div>
+                                    <div class="risk-text">
+                                        <div class="risk-level">分析中...</div>
+                                        <div class="risk-description">正在评估您的学习状况</div>
+                                    </div>
+                                </div>
+                                
+                                <div id="risk-reasons">
+                                    <h4 style="margin-bottom: 1rem; color: var(--primary-dark);">风险因素分析</h4>
+                                    <ul class="suggestions-list" id="reasons-list">
+                                        <!-- 风险原因将在这里显示 -->
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 薄弱知识点分析 -->
+                    <div class="profile-grid">
+                        <div class="profile-card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <span>分析</span>
+                                    薄弱知识点
+                                </h3>
+                            </div>
+                            <div class="card-content">
+                                <div class="weak-points-list" id="weak-points-list">
+                                    <!-- 薄弱知识点将在这里显示 -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 学习建议 -->
+                        <div class="profile-card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <span>建议</span>
+                                    个性化建议
+                                </h3>
+                            </div>
+                            <div class="card-content">
+                                <ul class="suggestions-list" id="suggestions-list">
+                                    <!-- 学习建议将在这里显示 -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 空状态 -->
+                    <div class="empty-state" id="empty-state" style="display: none;">
+                        <div class="empty-state-icon">数据</div>
+                        <h3>暂无学习数据</h3>
+                        <p>开始使用系统进行学习，我们将为您生成详细的学情分析报告</p>
+                        <div style="margin-top: 2rem;">
+                            <a href="qa.html" class="btn btn-primary">开始学习</a>
+                        </div>
+                    </div>
+
+                    <!-- 加载状态 -->
+                    <div class="loading-profile" id="loading-profile">
+                        <div class="loading-spinner"></div>
+                        <p class="loading-text">正在分析您的学习数据...</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 页脚 -->
+        <footer class="footer">
+            <div class="container">
+                <p>&copy; 2026原子物理智能课堂系统 | 探索微观世界，启发科学思维</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- 加载脚本 -->
+    <script src="../assets/js/utils.js?v=4"></script>
+    <script src="../assets/js/api.js?v=4"></script>
+    <script src="../assets/js/modals.js?v=4"></script>
+    <script src="../assets/js/auth.js?v=4"></script>
+    <script src="../assets/js/event.js?v=4"></script>
+
+    <script>
+        let currentCourseId = 1; // 默认课程ID
+        let currentUserId = null;
+
+        // 页面初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initAuth();
+            recordEvent('view_profile', {});
+            
+            // 获取当前用户信息
+            getCurrentUserInfo();
+        });
+
+        // 获取当前用户信息
+        async function getCurrentUserInfo() {
+            try {
+                const userInfo = await authAPI.getCurrentUser();
+                currentUserId = userInfo.id;
+                loadStudentProfile();
+            } catch (error) {
+                console.error('获取用户信息失败:', error);
+                showEmptyState();
+            }
+        }
+
+        // 加载学生档案
+        async function loadStudentProfile() {
+            if (!currentUserId) {
+                showEmptyState();
+                return;
+            }
+
+            showLoading();
+
+            try {
+                const profile = await analyticsAPI.getStudentProfile(currentUserId, currentCourseId);
+                displayProfile(profile);
+                
+                // 记录事件
+                recordEvent('view_student_profile', {
+                    user_id: currentUserId,
+                    risk_level: profile.risk_level,
+                    weak_kp_count: profile.weak_kp ? profile.weak_kp.length : 0
+                });
+                
+            } catch (error) {
+                hideLoading();
+                showEmptyState();
+                handleAPIError(error, '学情分析');
+            }
+        }
+
+        // 显示学生档案
+        function displayProfile(profile) {
+            hideLoading();
+            
+            // 显示活跃度统计
+            displayActivityStats(profile);
+            
+            // 显示风险评估
+            displayRiskAssessment(profile);
+            
+            // 显示薄弱知识点
+            displayWeakPoints(profile.weak_kp || []);
+            
+            // 显示学习建议
+            displaySuggestions(profile.suggestions || []);
+            
+            // 显示进度图表
+            displayProgressChart(profile);
+            
+            document.querySelector('.profile-container').style.display = 'block';
+        }
+
+        // 显示活跃度统计
+        function displayActivityStats(profile) {
+            document.getElementById('active-7d').textContent = profile.active_7d || 0;
+            document.getElementById('questions-asked').textContent = Math.floor(Math.random() * 20) + 5; // 模拟数据
+            document.getElementById('searches-made').textContent = Math.floor(Math.random() * 30) + 10; // 模拟数据
+            document.getElementById('study-hours').textContent = Math.floor(profile.active_7d * 0.5) + 'h'; // 模拟数据
+        }
+
+        // 显示风险评估
+        function displayRiskAssessment(profile) {
+            const riskIndicator = document.getElementById('risk-indicator');
+            const reasonsList = document.getElementById('reasons-list');
+            
+            // 清除现有类名
+            riskIndicator.className = 'risk-indicator';
+            
+            // 根据风险等级设置样式和内容
+            let riskConfig = {};
+            switch (profile.risk_level) {
+                case 'low':
+                    riskConfig = {
+                        class: 'risk-low',
+                        icon: '',
+                        level: '低风险',
+                        description: '学习状态良好，继续保持！'
+                    };
+                    break;
+                case 'medium':
+                    riskConfig = {
+                        class: 'risk-medium',
+                        icon: '',
+                        level: '中等风险',
+                        description: '需要关注一些学习问题'
+                    };
+                    break;
+                case 'high':
+                    riskConfig = {
+                        class: 'risk-high',
+                        icon: '',
+                        level: '高风险',
+                        description: '需要立即改善学习状况'
+                    };
+                    break;
+                default:
+                    riskConfig = {
+                        class: 'risk-medium',
+                        icon: '',
+                        level: '未知',
+                        description: '数据不足，无法评估'
+                    };
+            }
+            
+            riskIndicator.classList.add(riskConfig.class);
+            riskIndicator.innerHTML = `
+                <div class="risk-icon">${riskConfig.icon}</div>
+                <div class="risk-text">
+                    <div class="risk-level">${riskConfig.level}</div>
+                    <div class="risk-description">${riskConfig.description}</div>
+                </div>
+            `;
+            
+            // 显示风险原因
+            reasonsList.innerHTML = '';
+            (profile.reasons || []).forEach(reason => {
+                const li = document.createElement('li');
+                li.className = 'suggestion-item';
+                li.innerHTML = `
+                    <div class="suggestion-icon">📌</div>
+                    <div class="suggestion-text">${reason}</div>
+                `;
+                reasonsList.appendChild(li);
+            });
+        }
+
+        // 显示薄弱知识点
+        function displayWeakPoints(weakPoints) {
+            const container = document.getElementById('weak-points-list');
+            container.innerHTML = '';
+            
+            if (weakPoints.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 2rem; color: var(--text-muted);">
+                        <div style="font-size: 2rem; margin-bottom: 1rem;">🎉</div>
+                        <p>太棒了！暂未发现明显的薄弱知识点</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            weakPoints.forEach(point => {
+                const item = document.createElement('div');
+                item.className = 'weak-point-item';
+                
+                const scorePercent = Math.round(point.score * 100);
+                
+                item.innerHTML = `
+                    <div class="weak-point-info">
+                        <div class="weak-point-name">${point.kp}</div>
+                        <div class="weak-point-score">掌握程度: ${scorePercent}%</div>
+                    </div>
+                    <div class="score-bar">
+                        <div class="score-fill" style="width: ${scorePercent}%"></div>
+                    </div>
+                `;
+                
+                // 添加点击事件
+                item.addEventListener('click', function() {
+                    localStorage.setItem('searchQuery', point.kp);
+                    window.location.href = 'search.html';
+                });
+                
+                container.appendChild(item);
+            });
+        }
+
+        // 显示学习建议
+        function displaySuggestions(suggestions) {
+            const container = document.getElementById('suggestions-list');
+            container.innerHTML = '';
+            
+            if (suggestions.length === 0) {
+                // 提供默认建议
+                const defaultSuggestions = [
+                    '保持每日学习习惯，建议每天至少学习30分钟',
+                    '多使用问答功能，主动提问可以加深理解',
+                    '定期复习已学内容，巩固知识基础',
+                    '关注薄弱知识点，针对性地进行强化学习'
+                ];
+                suggestions = defaultSuggestions;
+            }
+            
+            const icons = ['💡', '🎯', '📚', '🔄', '⭐', '🚀'];
+            
+            suggestions.forEach((suggestion, index) => {
+                const li = document.createElement('li');
+                li.className = 'suggestion-item';
+                li.innerHTML = `
+                    <div class="suggestion-icon">${icons[index % icons.length]}</div>
+                    <div class="suggestion-text">${suggestion}</div>
+                `;
+                container.appendChild(li);
+            });
+        }
+
+        // 显示进度图表
+        function displayProgressChart(profile) {
+            const container = document.getElementById('progress-chart');
+            container.innerHTML = '';
+            
+            // 模拟一周的学习进度数据
+            const weekData = [
+                { label: '周一', value: Math.random() * 100 },
+                { label: '周二', value: Math.random() * 100 },
+                { label: '周三', value: Math.random() * 100 },
+                { label: '周四', value: Math.random() * 100 },
+                { label: '周五', value: Math.random() * 100 },
+                { label: '周六', value: Math.random() * 100 },
+                { label: '周日', value: Math.random() * 100 }
+            ];
+            
+            weekData.forEach(day => {
+                const bar = document.createElement('div');
+                bar.className = 'progress-bar';
+                bar.innerHTML = `
+                    <div class="progress-fill" style="height: ${day.value}%"></div>
+                    <div class="progress-label">${day.label}</div>
+                `;
+                container.appendChild(bar);
+            });
+            
+            // 添加动画效果
+            setTimeout(() => {
+                const fills = container.querySelectorAll('.progress-fill');
+                fills.forEach((fill, index) => {
+                    setTimeout(() => {
+                        fill.style.height = weekData[index].value + '%';
+                    }, index * 100);
+                });
+            }, 500);
+        }
+
+        // 显示加载状态
+        function showLoading() {
+            document.getElementById('loading-profile').style.display = 'block';
+            document.querySelector('.profile-container').style.display = 'none';
+            document.getElementById('empty-state').style.display = 'none';
+        }
+
+        // 隐藏加载状态
+        function hideLoading() {
+            document.getElementById('loading-profile').style.display = 'none';
+        }
+
+        // 显示空状态
+        function showEmptyState() {
+            document.getElementById('loading-profile').style.display = 'none';
+            document.querySelector('.profile-container').style.display = 'none';
+            document.getElementById('empty-state').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

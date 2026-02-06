@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>教师端 - 原子物理智能课堂</title>
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/layout.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚛️</text></svg>">
+    <style>
+        /* 教师端页面样式 */
+        .teacher-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+        }
+
+        /* 用户区域样式 */
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.6rem 1.2rem;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border: 1px solid rgba(45, 90, 71, 0.1);
+            border-radius: 20px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(45, 90, 71, 0.08);
+        }
+
+        .user-section:hover {
+            background: linear-gradient(135deg, #ffffff 0%, #faf8f5 100%);
+            border-color: var(--accent-gold);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.15);
+        }
+
+        .user-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-main) 0%, var(--primary-light) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.3rem;
+            box-shadow: 0 3px 10px rgba(45, 90, 71, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .user-avatar::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s;
+            opacity: 0;
+        }
+
+        .user-section:hover .user-avatar::before {
+            opacity: 1;
+            transform: rotate(45deg) translate(50%, 50%);
+        }
+
+        .user-section:hover .user-avatar {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(45, 90, 71, 0.4);
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .username {
+            font-weight: 600;
+            color: var(--primary-dark);
+            font-size: 0.95rem;
+            line-height: 1.2;
+        }
+
+        .user-role {
+            font-size: 0.8rem;
+            color: #6c757d;
+            background: linear-gradient(135deg, rgba(45, 90, 71, 0.1) 0%, rgba(45, 90, 71, 0.05) 100%);
+            padding: 0.3rem 0.6rem;
+            border-radius: 10px;
+            font-weight: 500;
+            border: 1px solid rgba(45, 90, 71, 0.1);
+        }
+
+        .user-section .btn-ghost {
+            background: transparent;
+            border: 1px solid rgba(45, 90, 71, 0.2);
+            color: var(--primary-dark);
+            padding: 0.5rem 1.2rem;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .user-section .btn-ghost::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(45, 90, 71, 0.1), transparent);
+            transition: left 0.4s;
+        }
+
+        .user-section .btn-ghost:hover::before {
+            left: 100%;
+        }
+
+        .user-section .btn-ghost:hover {
+            background: linear-gradient(135deg, var(--primary-main) 0%, var(--primary-light) 100%);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(45, 90, 71, 0.3);
+        }
+
+        /* 标签页样式 */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2.5rem;
+            background: rgba(248, 249, 250, 0.8);
+            padding: 0.5rem;
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+        }
+
+        .tab-btn {
+            padding: 1rem 2rem;
+            border: none;
+            background: transparent;
+            color: #6c757d;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .tab-btn:hover {
+            color: #495057;
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .tab-btn.active {
+            color: #ffffff;
+            background: linear-gradient(135deg, var(--primary-main) 0%, var(--primary-light) 100%);
+            box-shadow: 0 4px 15px rgba(45, 90, 71, 0.3);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 卡片样式 */
+        .card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(45, 90, 71, 0.1);
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-dark) 0%, var(--primary-main) 25%, var(--accent-gold) 50%, var(--primary-light) 75%, var(--primary-dark) 100%);
+        }
+
+        .card-header {
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--primary-main) 0%, var(--primary-light) 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.08'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3Ccircle cx='10' cy='10' r='3'/%3E%3Ccircle cx='50' cy='10' r='3'/%3E%3Ccircle cx='10' cy='50' r='3'/%3E%3Ccircle cx='50' cy='50' r='3'/%3E%3C/g%3E%3C/svg%3E") repeat;
+            opacity: 0.6;
+        }
+
+        .card-header > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-header h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 0 0.5rem 0;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            color: white;
+        }
+
+        .card-header p {
+            margin: 0;
+            opacity: 0.95;
+            font-size: 0.95rem;
+            color: white;
+        }
+
+        .card-body {
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        /* 统计卡片 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            border: 1px solid rgba(45, 90, 71, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--primary-main) 0%, var(--primary-light) 100%);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(45, 90, 71, 0.15);
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(45, 90, 71, 0.1) 0%, rgba(45, 90, 71, 0.05) 100%);
+            border-radius: 16px;
+        }
+
+        .stat-info {
+            flex: 1;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        /* 上传区域 */
+        .upload-section {
+            max-width: 800px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #ffffff;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-main);
+            box-shadow: 0 0 0 4px rgba(45, 90, 71, 0.1);
+        }
+
+        .form-text {
+            display: block;
+            margin-top: 0.5rem;
+            color: #6c757d;
+            font-size: 0.875rem;
+        }
+
+        .form-actions {
+            margin-top: 2rem;
+        }
+
+        /* 进度显示 */
+        .progress-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(45, 90, 71, 0.1);
+        }
+
+        .progress-item:last-of-type {
+            border-bottom: none;
+        }
+
+        .progress-item span:first-child {
+            font-weight: 500;
+            color: var(--primary-dark);
+        }
+
+        .status-pending { 
+            color: #6c757d;
+            font-weight: 500;
+        }
+        .status-processing { 
+            color: #007bff;
+            font-weight: 600;
+            animation: pulse 1.5s infinite;
+        }
+        .status-success { 
+            color: #28a745;
+            font-weight: 600;
+        }
+        .status-error { 
+            color: #dc3545;
+            font-weight: 600;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: #e9ecef;
+            border-radius: 6px;
+            margin: 1.5rem 0 1rem 0;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-main) 0%, var(--primary-light) 100%);
+            transition: width 0.5s ease;
+            box-shadow: 0 2px 8px rgba(45, 90, 71, 0.3);
+        }
+
+        .progress-text {
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--primary-main);
+        }
+
+        /* 预警列表 */
+        .alert-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            border-left: 4px solid;
+            transition: all 0.3s ease;
+        }
+
+        .alert-item:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .alert-low { 
+            background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+            border-left-color: #17a2b8; 
+        }
+
+        .alert-medium { 
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border-left-color: #ffc107; 
+        }
+
+        .alert-high { 
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            border-left-color: #dc3545; 
+        }
+
+        .alert-user {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary-dark);
+        }
+
+        .alert-reason {
+            color: #495057;
+            font-size: 0.95rem;
+        }
+
+        .alert-level {
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        /* 图表 */
+        .chart-bar-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .bar-label {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--primary-dark);
+            font-size: 1rem;
+        }
+
+        .bar-container {
+            position: relative;
+            background: #e9ecef;
+            height: 32px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-main) 0%, var(--primary-light) 100%);
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(45, 90, 71, 0.3);
+        }
+
+        .bar-value {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        /* 空状态 */
+        .empty-message {
+            text-align: center;
+            color: #6c757d;
+            padding: 3rem 2rem;
+            font-size: 1rem;
+        }
+
+        .empty-message p {
+            margin: 0.5rem 0;
+        }
+
+        .loading-placeholder {
+            text-align: center;
+            color: #6c757d;
+            padding: 2rem;
+            font-size: 1rem;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .tabs {
+                flex-wrap: wrap;
+            }
+
+            .tab-btn {
+                flex: 1;
+                min-width: 120px;
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .alert-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .stat-card {
+                padding: 1.5rem;
+            }
+
+            .stat-icon {
+                font-size: 2.5rem;
+                width: 60px;
+                height: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 导航栏 -->
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-brand">
+                    <h1><a href="../index.html" style="color: inherit;">⚛️ 原子物理智能课堂</a></h1>
+                </div>
+                <div class="nav-menu">
+                    <a href="search.html" class="nav-link">知识检索</a>
+                    <a href="qa.html" class="nav-link">智能问答</a>
+                    <a href="recommend.html" class="nav-link">学习推荐</a>
+                    <a href="profile.html" class="nav-link">学情分析</a>
+                    <a href="teacher.html" class="nav-link active teacher-only">教师端</a>
+                </div>
+                <div class="nav-user">
+                    <!-- 未登录状态 -->
+                    <div id="login-section" class="login-section">
+                        <button id="login-btn" class="btn btn-primary btn-sm">登录</button>
+                    </div>
+                    
+                    <!-- 已登录状态 -->
+                    <div id="user-section" class="user-section" style="display: none;">
+                        <div class="user-avatar" id="user-avatar">
+                            <span id="avatar-text">U</span>
+                        </div>
+                        <div class="user-info">
+                            <span id="username" class="username">用户名</span>
+                            <span id="user-role" class="user-role">教师</span>
+                        </div>
+                        <button id="logout-btn" class="btn btn-ghost btn-sm">退出</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- 主要内容 -->
+        <main class="main-content">
+            <div class="container">
+                <div class="page-header">
+                    <h1 class="page-title">教师管理面板</h1>
+                    <p class="page-subtitle">管理课程资料和查看班级学习情况</p>
+                </div>
+
+                <div class="teacher-container">
+                    <!-- 功能选项卡 -->
+                    <div class="tabs">
+                        <button class="tab-btn active" data-tab="upload">资料上传</button>
+                        <button class="tab-btn" data-tab="dashboard">班级面板</button>
+                        <button class="tab-btn" data-tab="documents">文档管理</button>
+                    </div>
+
+                    <!-- 资料上传标签页 -->
+                    <div class="tab-content active" id="upload-tab">
+                        <div class="upload-section">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div>
+                                        <h3>上传课程资料</h3>
+                                        <p>支持PDF、Word、PowerPoint、Markdown等格式</p>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <form id="upload-form" enctype="multipart/form-data">
+                                        <div class="form-group">
+                                            <label for="file-input">选择文件</label>
+                                            <input type="file" id="file-input" name="file" class="form-control" 
+                                                   accept=".pdf,.docx,.pptx,.md,.txt" required>
+                                            <small class="form-text">支持的格式：PDF, Word, PowerPoint, Markdown, 纯文本</small>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="course-select">选择课程</label>
+                                            <select id="course-select" name="courseId" class="form-control" required>
+                                                <option value="1">原子物理学</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-actions">
+                                            <button type="submit" class="btn btn-primary" id="upload-btn">
+                                                上传文件
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <!-- 上传进度 -->
+                            <div class="card" id="upload-progress" style="display: none;">
+                                <div class="card-header">
+                                    <div>
+                                        <h3>处理进度</h3>
+                                        <p>正在处理您的文档...</p>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="progress-item">
+                                        <span>📤 文件上传</span>
+                                        <span id="upload-status" class="status-pending">等待中</span>
+                                    </div>
+                                    <div class="progress-item">
+                                        <span>📄 文档解析</span>
+                                        <span id="parse-status" class="status-pending">等待中</span>
+                                    </div>
+                                    <div class="progress-item">
+                                        <span>🔢 向量化处理</span>
+                                        <span id="vectorize-status" class="status-pending">等待中</span>
+                                    </div>
+                                    <div class="progress-item">
+                                        <span>✅ 入库完成</span>
+                                        <span id="ingest-status" class="status-pending">等待中</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                                    </div>
+                                    <div class="progress-text" id="progress-text">0%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 班级面板标签页 -->
+                    <div class="tab-content" id="dashboard-tab">
+                        <div class="dashboard-section">
+                            <!-- 统计卡片 -->
+                            <div class="stats-grid">
+                                <div class="stat-card">
+                                    <div class="stat-icon">👥</div>
+                                    <div class="stat-info">
+                                        <div class="stat-number" id="total-students">-</div>
+                                        <div class="stat-label">学生总数</div>
+                                    </div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-icon">⚠️</div>
+                                    <div class="stat-info">
+                                        <div class="stat-number" id="at-risk-students">-</div>
+                                        <div class="stat-label">需要关注</div>
+                                    </div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-icon">📚</div>
+                                    <div class="stat-info">
+                                        <div class="stat-number" id="weak-topics">-</div>
+                                        <div class="stat-label">薄弱知识点</div>
+                                    </div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-icon">💬</div>
+                                    <div class="stat-info">
+                                        <div class="stat-number" id="total-questions">-</div>
+                                        <div class="stat-label">本周提问</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 预警学生列表 -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <div>
+                                        <h3>需要关注的学生</h3>
+                                        <p>根据学习数据分析，以下学生可能需要额外关注</p>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div id="alerts-list">
+                                        <div class="loading-placeholder">加载中...</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 薄弱知识点分布 -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <div>
+                                        <h3>班级薄弱知识点分布</h3>
+                                        <p>了解全班学生在各知识点的掌握情况</p>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div id="weak-kp-chart">
+                                        <div class="loading-placeholder">加载中...</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 文档管理标签页 -->
+                    <div class="tab-content" id="documents-tab">
+                        <div class="documents-section">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div>
+                                        <h3>已上传文档</h3>
+                                        <p>管理您上传的所有课程资料</p>
+                                    </div>
+                                    <button class="btn btn-primary" id="refresh-docs-btn">🔄 刷新</button>
+                                </div>
+                                <div class="card-body">
+                                    <div id="documents-list">
+                                        <div class="loading-placeholder">加载中...</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 页脚 -->
+        <footer class="footer">
+            <div class="container">
+                <p>&copy; 2025 原子物理智能课堂系统 | 探索微观世界，启发科学思维</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- 加载脚本 -->
+    <script src="../assets/js/utils.js?v=4"></script>
+    <script src="../assets/js/api.js?v=4"></script>
+    <script src="../assets/js/modals.js?v=4"></script>
+    <script src="../assets/js/auth.js?v=4"></script>
+    <script src="../assets/js/event.js?v=4"></script>
+    <script>
+        class TeacherPage {
+            constructor() {
+                this.currentTaskId = null;
+                this.progressInterval = null;
+                this.pageTracker = new PageTracker('teacher');
+                
+                this.initElements();
+                this.bindEvents();
+                this.loadDashboard();
+            }
+
+            initElements() {
+                this.uploadForm = document.getElementById('upload-form');
+                this.fileInput = document.getElementById('file-input');
+                this.uploadBtn = document.getElementById('upload-btn');
+                this.uploadProgress = document.getElementById('upload-progress');
+                this.progressFill = document.getElementById('progress-fill');
+                this.progressText = document.getElementById('progress-text');
+            }
+
+            bindEvents() {
+                // 标签页切换
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        this.switchTab(btn.dataset.tab);
+                    });
+                });
+
+                // 文件上传表单
+                this.uploadForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.uploadFile();
+                });
+
+                // 刷新文档列表
+                document.getElementById('refresh-docs-btn').addEventListener('click', () => {
+                    this.loadDocuments();
+                });
+            }
+
+            switchTab(tabName) {
+                // 更新标签按钮状态
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+
+                // 更新内容区域
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById(`${tabName}-tab`).classList.add('active');
+
+                // 加载对应数据
+                if (tabName === 'dashboard') {
+                    this.loadDashboard();
+                } else if (tabName === 'documents') {
+                    this.loadDocuments();
+                }
+            }
+
+            async uploadFile() {
+                const file = this.fileInput.files[0];
+                if (!file) {
+                    showToast('请选择文件', 'warning');
+                    return;
+                }
+
+                const courseId = document.getElementById('course-select').value;
+
+                // 记录上传事件
+                eventTracker.trackDocumentUpload(file.name, file.size, file.type);
+
+                try {
+                    // 显示进度
+                    this.showUploadProgress();
+                    this.updateUploadStatus('upload-status', 'processing', '上传中...');
+
+                    // 上传文件
+                    const uploadResult = await kbAPI.uploadDocument(file, parseInt(courseId));
+                    this.updateUploadStatus('upload-status', 'success', '上传完成');
+
+                    // 开始入库处理
+                    this.updateUploadStatus('parse-status', 'processing', '解析中...');
+                    const ingestResult = await kbAPI.ingestDocument(uploadResult.document_id);
+                    
+                    this.currentTaskId = ingestResult.task_id;
+                    this.startProgressMonitoring();
+
+                } catch (error) {
+                    console.error('Upload failed:', error);
+                    showToast('上传失败：' + error.message, 'error');
+                    this.updateUploadStatus('upload-status', 'error', '上传失败');
+                    this.hideUploadProgress();
+                }
+            }
+
+            showUploadProgress() {
+                this.uploadProgress.style.display = 'block';
+                this.uploadBtn.disabled = true;
+                
+                // 重置状态
+                ['upload-status', 'parse-status', 'vectorize-status', 'ingest-status'].forEach(id => {
+                    this.updateUploadStatus(id, 'pending', '等待中');
+                });
+                this.updateProgress(0);
+            }
+
+            hideUploadProgress() {
+                this.uploadProgress.style.display = 'none';
+                this.uploadBtn.disabled = false;
+                this.uploadForm.reset();
+            }
+
+            updateUploadStatus(elementId, status, text) {
+                const element = document.getElementById(elementId);
+                element.className = `status-${status}`;
+                element.textContent = text;
+            }
+
+            updateProgress(percentage) {
+                this.progressFill.style.width = `${percentage}%`;
+                this.progressText.textContent = `${Math.round(percentage)}%`;
+            }
+
+            async startProgressMonitoring() {
+                if (!this.currentTaskId) return;
+
+                this.progressInterval = setInterval(async () => {
+                    try {
+                        const taskStatus = await kbAPI.getTaskStatus(this.currentTaskId);
+                        
+                        if (taskStatus.status === 'processing') {
+                            const progress = taskStatus.progress * 100;
+                            this.updateProgress(progress);
+                            
+                            if (progress >= 30) {
+                                this.updateUploadStatus('parse-status', 'success', '解析完成');
+                                this.updateUploadStatus('vectorize-status', 'processing', '向量化中...');
+                            }
+                            if (progress >= 70) {
+                                this.updateUploadStatus('vectorize-status', 'success', '向量化完成');
+                                this.updateUploadStatus('ingest-status', 'processing', '入库中...');
+                            }
+                        } else if (taskStatus.status === 'done') {
+                            this.updateProgress(100);
+                            this.updateUploadStatus('parse-status', 'success', '解析完成');
+                            this.updateUploadStatus('vectorize-status', 'success', '向量化完成');
+                            this.updateUploadStatus('ingest-status', 'success', '入库完成');
+                            
+                            showToast('文档处理完成', 'success');
+                            clearInterval(this.progressInterval);
+                            
+                            setTimeout(() => {
+                                this.hideUploadProgress();
+                            }, 2000);
+                            
+                        } else if (taskStatus.status === 'failed') {
+                            this.updateUploadStatus('ingest-status', 'error', '处理失败');
+                            showToast('文档处理失败：' + (taskStatus.error || '未知错误'), 'error');
+                            clearInterval(this.progressInterval);
+                        }
+                        
+                    } catch (error) {
+                        console.error('Progress monitoring failed:', error);
+                        clearInterval(this.progressInterval);
+                    }
+                }, 2000);
+            }
+
+            async loadDashboard() {
+                try {
+                    const dashboard = await analyticsAPI.getClassDashboard(getDefaultCourseId());
+                    
+                    // 更新统计数据
+                    this.updateStats(dashboard);
+                    
+                    // 更新预警列表
+                    this.updateAlertsList(dashboard.alerts);
+                    
+                    // 更新薄弱知识点图表
+                    this.updateWeakKpChart(dashboard.weak_kp_dist);
+                    
+                } catch (error) {
+                    console.error('Load dashboard failed:', error);
+                    showToast('加载班级面板失败', 'error');
+                }
+            }
+
+            updateStats(dashboard) {
+                // 这里是模拟数据，实际应该从API获取
+                document.getElementById('total-students').textContent = '25';
+                document.getElementById('at-risk-students').textContent = dashboard.alerts.length;
+                document.getElementById('weak-topics').textContent = dashboard.weak_kp_dist.length;
+                document.getElementById('total-questions').textContent = '156';
+            }
+
+            updateAlertsList(alerts) {
+                const container = document.getElementById('alerts-list');
+                
+                if (alerts.length === 0) {
+                    container.innerHTML = '<div class="empty-message">暂无需要关注的学生</div>';
+                    return;
+                }
+
+                container.innerHTML = '';
+                alerts.forEach(alert => {
+                    const alertItem = document.createElement('div');
+                    alertItem.className = `alert-item alert-${alert.level}`;
+                    alertItem.innerHTML = `
+                        <div class="alert-info">
+                            <div class="alert-user">学生ID: ${alert.user_id}</div>
+                            <div class="alert-reason">${alert.reason}</div>
+                        </div>
+                        <div class="alert-level">${this.getLevelText(alert.level)}</div>
+                    `;
+                    container.appendChild(alertItem);
+                });
+            }
+
+            updateWeakKpChart(weakKpDist) {
+                const container = document.getElementById('weak-kp-chart');
+                
+                if (weakKpDist.length === 0) {
+                    container.innerHTML = '<div class="empty-message">暂无薄弱知识点数据</div>';
+                    return;
+                }
+
+                container.innerHTML = '';
+                const maxCount = Math.max(...weakKpDist.map(item => item.count));
+                
+                weakKpDist.forEach(item => {
+                    const barItem = document.createElement('div');
+                    barItem.className = 'chart-bar-item';
+                    
+                    const percentage = (item.count / maxCount) * 100;
+                    
+                    barItem.innerHTML = `
+                        <div class="bar-label">${item.kp}</div>
+                        <div class="bar-container">
+                            <div class="bar-fill" style="width: ${percentage}%"></div>
+                            <div class="bar-value">${item.count}</div>
+                        </div>
+                    `;
+                    container.appendChild(barItem);
+                });
+            }
+
+            getLevelText(level) {
+                const levelMap = {
+                    'low': '低风险',
+                    'medium': '中风险', 
+                    'high': '高风险'
+                };
+                return levelMap[level] || level;
+            }
+
+            async loadDocuments() {
+                // 这里应该实现文档列表加载
+                // 由于API中没有文档列表接口，这里显示占位内容
+                const container = document.getElementById('documents-list');
+                container.innerHTML = `
+                    <div class="empty-message">
+                        <p>文档管理功能开发中...</p>
+                        <p>已上传的文档会在知识库中自动处理</p>
+                    </div>
+                `;
+            }
+        }
+
+        // 页面初始化
+        document.addEventListener('DOMContentLoaded', async function() {
+            await initAuth();
+            
+            if (!checkPageAccess('teacher')) {
+                return;
+            }
+            
+            new TeacherPage();
+        });
+    </script>
+</body>
+</html>

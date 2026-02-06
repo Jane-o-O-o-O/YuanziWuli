@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学习推荐 - 原子物理智能课堂系统</title>
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/layout.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚛️</text></svg>">
+    <style>
+        /* 推荐页面特定样式 */
+        .recommend-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+        }
+
+        .recommend-input {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08), 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .recommend-input:hover {
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.12), 0 5px 15px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .recommend-input::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-dark) 0%, var(--primary-main) 25%, var(--accent-gold) 50%, var(--primary-light) 75%, var(--primary-dark) 100%);
+            animation: gradient-shift 8s ease infinite;
+        }
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .input-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            background: rgba(248, 249, 250, 0.8);
+            padding: 0.25rem;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .tab-button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: transparent;
+            color: #6c757d;
+            font-weight: 500;
+            font-size: 0.95rem;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .tab-button:hover {
+            color: #495057;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .tab-button.active {
+            color: #ffffff;
+            background: linear-gradient(135deg, var(--primary-main) 0%, var(--primary-light) 100%);
+            box-shadow: 0 4px 15px rgba(45, 90, 71, 0.3);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .question-input-form {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-end;
+        }
+
+        .question-input-group {
+            flex: 1;
+        }
+
+        .question-input {
+            width: 100%;
+            padding: 1.25rem;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: #ffffff;
+            resize: vertical;
+            min-height: 80px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .question-input:focus {
+            outline: none;
+            border-color: var(--primary-main);
+            box-shadow: 0 0 0 4px rgba(45, 90, 71, 0.1), 0 4px 20px rgba(45, 90, 71, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .question-input::placeholder {
+            color: #adb5bd;
+        }
+
+        .recommend-button {
+            min-width: 140px;
+            height: 80px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary-main) 0%, var(--primary-light) 100%);
+            border: none;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(45, 90, 71, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .recommend-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .recommend-button:hover::before {
+            left: 100%;
+        }
+
+        .recommend-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(45, 90, 71, 0.4);
+        }
+
+        .recommend-button:active {
+            transform: translateY(0);
+        }
+
+        .recommendations-container {
+            display: none;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .recommendations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: var(--space-2xl);
+        }
+
+        .recommendation-section {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(45, 90, 71, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .recommendation-section:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .section-header {
+            padding: 1.5rem 2rem;
+            background: linear-gradient(135deg, var(--primary-main) 0%, var(--primary-light) 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.08'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3Ccircle cx='10' cy='10' r='3'/%3E%3Ccircle cx='50' cy='10' r='3'/%3E%3Ccircle cx='10' cy='50' r='3'/%3E%3Ccircle cx='50' cy='50' r='3'/%3E%3C/g%3E%3C/svg%3E") repeat;
+            opacity: 0.6;
+        }
+
+        .section-header > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-description {
+            margin: 0.5rem 0 0;
+            opacity: 0.95;
+            font-size: 0.95rem;
+            font-weight: 400;
+        }
+
+        .section-content {
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .recommendation-item {
+            padding: 1.5rem;
+            border: 1px solid rgba(45, 90, 71, 0.1);
+            border-radius: 16px;
+            margin-bottom: 1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        }
+
+        .recommendation-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .recommendation-item:hover {
+            border-color: var(--primary-main);
+            box-shadow: 0 8px 25px rgba(45, 90, 71, 0.15);
+            transform: translateY(-3px) scale(1.02);
+        }
+
+        .recommendation-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 0;
+            background: linear-gradient(135deg, var(--primary-main) 0%, var(--primary-light) 100%);
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .recommendation-item:hover::before {
+            width: 5px;
+        }
+
+        .item-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+        }
+
+        .item-description {
+            color: #6c757d;
+            line-height: 1.7;
+            margin-bottom: 1.25rem;
+            font-size: 0.95rem;
+            margin-bottom: var(--space-md);
+        }
+
+        .item-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .action-tag {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #495057;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border: 1px solid rgba(45, 90, 71, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-tag::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.4s;
+        }
+
+        .action-tag:hover::before {
+            left: 100%;
+        }
+
+        .action-tag:hover {
+            background: linear-gradient(135deg, var(--primary-main) 0%, var(--primary-light) 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(45, 90, 71, 0.3);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #6c757d;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 20px;
+            border: 2px dashed #dee2e6;
+            margin: 2rem 0;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.6;
+            background: linear-gradient(135deg, var(--primary-main) 0%, var(--primary-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .empty-state h3 {
+            color: #495057;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state p {
+            color: #6c757d;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .suggested-topics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .topic-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border: 1px solid rgba(45, 90, 71, 0.1);
+            border-radius: 16px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .topic-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-main) 0%, var(--primary-light) 100%);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .topic-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .topic-card:hover {
+            border-color: var(--primary-main);
+            box-shadow: 0 12px 30px rgba(45, 90, 71, 0.15);
+            transform: translateY(-6px) scale(1.03);
+        }
+
+        .topic-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+            background: linear-gradient(135deg, var(--primary-main) 0%, var(--primary-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .topic-title {
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .topic-subtitle {
+            font-size: 0.9rem;
+            color: #6c757d;
+            line-height: 1.5;
+        }
+
+        .loading-recommendations {
+            text-align: center;
+            padding: var(--space-3xl);
+            display: none;
+        }
+
+        .progress-indicator {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-sm);
+            margin-top: var(--space-lg);
+        }
+
+        .progress-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--border-light);
+            animation: pulse 1.5s infinite;
+        }
+
+        .progress-dot:nth-child(1) { animation-delay: 0s; }
+        .progress-dot:nth-child(2) { animation-delay: 0.3s; }
+        .progress-dot:nth-child(3) { animation-delay: 0.6s; }
+
+        @keyframes pulse {
+            0%, 100% { background: var(--border-light); transform: scale(1); }
+            50% { background: var(--primary-main); transform: scale(1.2); }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .question-input-form {
+                flex-direction: column;
+                gap: var(--space-md);
+            }
+            
+            .recommend-button {
+                width: 100%;
+            }
+            
+            .input-tabs {
+                flex-wrap: wrap;
+            }
+            
+            .suggested-topics {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar .container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-menu {
+                display: flex;
+                align-items: center;
+                gap: 2rem;
+                margin-right: 2rem;
+            }
+
+            .nav-brand {
+                flex-shrink: 0;
+            }
+
+            .nav-user {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                margin-left: auto;
+            }
+
+            .login-section .btn-primary {
+                background: linear-gradient(135deg, var(--primary-main) 0%, var(--primary-light) 100%);
+                border: none;
+                border-radius: 12px;
+                padding: 0.6rem 1.8rem;
+                font-weight: 600;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                box-shadow: 0 4px 15px rgba(45, 90, 71, 0.3);
+                position: relative;
+                overflow: hidden;
+            }
+        }
+
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.6rem 1.2rem;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border: 1px solid rgba(45, 90, 71, 0.1);
+            border-radius: 20px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(45, 90, 71, 0.08);
+        }
+
+        .user-section:hover {
+            background: linear-gradient(135deg, #ffffff 0%, #faf8f5 100%);
+            border-color: var(--accent-gold);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.15);
+        }
+
+        .user-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-main) 0%, var(--primary-light) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.3rem;
+            box-shadow: 0 3px 10px rgba(45, 90, 71, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .user-avatar::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s;
+            opacity: 0;
+        }
+
+        .user-section:hover .user-avatar::before {
+            opacity: 1;
+            transform: rotate(45deg) translate(50%, 50%);
+        }
+
+        .user-section:hover .user-avatar {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(45, 90, 71, 0.4);
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .username {
+            font-weight: 600;
+            color: var(--primary-dark);
+            font-size: 0.95rem;
+            line-height: 1.2;
+        }
+
+        .user-role {
+            font-size: 0.8rem;
+            color: #6c757d;
+            background: linear-gradient(135deg, rgba(45, 90, 71, 0.1) 0%, rgba(45, 90, 71, 0.05) 100%);
+            padding: 0.3rem 0.6rem;
+            border-radius: 10px;
+            font-weight: 500;
+            border: 1px solid rgba(45, 90, 71, 0.1);
+        }
+
+        .user-section .btn-ghost {
+            background: transparent;
+            border: 1px solid rgba(45, 90, 71, 0.2);
+            color: var(--primary-dark);
+            padding: 0.5rem 1.2rem;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .user-section .btn-ghost::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(45, 90, 71, 0.1), transparent);
+            transition: left 0.4s;
+        }
+
+        .user-section .btn-ghost:hover::before {
+            left: 100%;
+        }
+
+        .user-section .btn-ghost:hover {
+            background: linear-gradient(135deg, var(--primary-main) 0%, var(--primary-light) 100%);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(45, 90, 71, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 导航栏 -->
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-brand">
+                    <h1><a href="../index.html" style="color: inherit;">⚛️ 原子物理智能课堂</a></h1>
+                </div>
+                <div class="nav-menu">
+                    <a href="search.html" class="nav-link">知识检索</a>
+                    <a href="qa.html" class="nav-link">智能问答</a>
+                    <a href="recommend.html" class="nav-link active">学习推荐</a>
+                    <a href="profile.html" class="nav-link">学情分析</a>
+                    <a href="teacher.html" class="nav-link teacher-only" style="display: none;">教师端</a>
+                </div>
+                <div class="nav-user">
+                    <!-- 未登录状态 -->
+                    <div id="login-section" class="login-section">
+                        <button id="login-btn" class="btn btn-primary btn-sm">登录</button>
+                    </div>
+                    
+                    <!-- 已登录状态 -->
+                    <div id="user-section" class="user-section" style="display: none;">
+                        <div class="user-avatar" id="user-avatar">
+                            <span id="avatar-text">U</span>
+                        </div>
+                        <div class="user-info">
+                            <span id="username" class="username">用户名</span>
+                            <span id="user-role" class="user-role">学生</span>
+                        </div>
+                        <button id="logout-btn" class="btn btn-ghost btn-sm">退出</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- 主要内容区域 -->
+        <main class="main-content">
+            <div class="container">
+                <div class="page-header">
+                    <h1 class="page-title">智能学习推荐</h1>
+                    <p class="page-subtitle">基于您的学习需求，为您推荐个性化的学习路径和相关知识点</p>
+                </div>
+
+                <div class="recommend-container">
+                    <!-- 推荐输入区域 -->
+                    <div class="recommend-input">
+                        <div class="input-tabs">
+                            <button class="tab-button active" onclick="switchTab('question')">
+                                基于问题推荐
+                            </button>
+                            <button class="tab-button" onclick="switchTab('profile')">
+                                基于学习档案推荐
+                            </button>
+                        </div>
+
+                        <!-- 基于问题的推荐 -->
+                        <div id="question-tab" class="tab-content active">
+                            <form id="question-recommend-form" class="question-input-form">
+                                <div class="question-input-group">
+                                    <textarea id="question-input" class="question-input" 
+                                              placeholder="请描述您想学习的内容或遇到的问题，例如：我想了解波粒二象性的概念..." 
+                                              rows="3" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary recommend-button">
+                                    <span class="recommend-text">获取推荐</span>
+                                    <span class="loading" style="display: none;"></span>
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- 基于档案的推荐 -->
+                        <div id="profile-tab" class="tab-content">
+                            <div style="text-align: center; padding: 2rem;">
+                                <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                                    基于您的学习历史和薄弱点，为您推荐个性化学习内容
+                                </p>
+                                <button class="btn btn-primary" onclick="getProfileRecommendations()">
+                                    分析我的学习档案
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 推荐结果 -->
+                    <div class="recommendations-container" id="recommendations-container">
+                        <div class="recommendations-grid" id="recommendations-grid">
+                            <!-- 推荐内容将在这里显示 -->
+                        </div>
+                    </div>
+
+                    <!-- 空状态 -->
+                    <div class="empty-state" id="empty-state">
+                        <h3>发现您的学习路径</h3>
+                        <p>告诉我们您想学习什么，我们将为您推荐最适合的学习内容和路径</p>
+                        
+                        <div class="suggested-topics">
+                            <div class="topic-card" onclick="getTopicRecommendations('波粒二象性')">
+                                <span class="topic-icon">物理</span>
+                                <div class="topic-title">波粒二象性</div>
+                                <div class="topic-subtitle">光和物质的双重性质</div>
+                            </div>
+                            <div class="topic-card" onclick="getTopicRecommendations('原子结构')">
+                                <span class="topic-icon">原子</span>
+                                <div class="topic-title">原子结构</div>
+                                <div class="topic-subtitle">原子的内部构造</div>
+                            </div>
+                            <div class="topic-card" onclick="getTopicRecommendations('量子力学')">
+                                <span class="topic-icon">量子</span>
+                                <div class="topic-title">量子力学</div>
+                                <div class="topic-subtitle">微观世界的物理规律</div>
+                            </div>
+                            <div class="topic-card" onclick="getTopicRecommendations('原子光谱')">
+                                <span class="topic-icon">光谱</span>
+                                <div class="topic-title">原子光谱</div>
+                                <div class="topic-subtitle">原子发光的奥秘</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 加载状态 -->
+                    <div class="loading-recommendations" id="loading-recommendations">
+                        <div class="loading-spinner"></div>
+                        <p class="loading-text">正在分析并生成个性化推荐...</p>
+                        <div class="progress-indicator">
+                            <div class="progress-dot"></div>
+                            <div class="progress-dot"></div>
+                            <div class="progress-dot"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 页脚 -->
+        <footer class="footer">
+            <div class="container">
+                <p>&copy; 2026原子物理智能课堂系统 | 探索微观世界，启发科学思维</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- 加载脚本 -->
+    <script src="../assets/js/utils.js?v=4"></script>
+    <script src="../assets/js/api.js?v=4"></script>
+    <script src="../assets/js/modals.js?v=4"></script>
+    <script src="../assets/js/auth.js?v=4"></script>
+    <script src="../assets/js/event.js?v=4"></script>
+
+    <script>
+        let currentCourseId = 1; // 默认课程ID
+
+        // 页面初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initAuth();
+            recordEvent('view_recommend', {});
+            
+            // 检查URL参数中是否有问题
+            const urlParams = getUrlParams();
+            if (urlParams.question) {
+                document.getElementById('question-input').value = decodeURIComponent(urlParams.question);
+                getQuestionRecommendations(decodeURIComponent(urlParams.question));
+            }
+        });
+
+        // 切换标签页
+        function switchTab(tabName) {
+            // 更新按钮状态
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // 更新内容显示
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+        }
+
+        // 问题推荐表单提交
+        document.getElementById('question-recommend-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const question = document.getElementById('question-input').value.trim();
+            if (!question) return;
+            
+            getQuestionRecommendations(question);
+        });
+
+        // 获取基于问题的推荐
+        async function getQuestionRecommendations(question) {
+            showLoading();
+            
+            try {
+                const response = await recAPI.getRecommendationByQuestion(question, currentCourseId);
+                displayRecommendations(response, question);
+                
+                // 记录事件
+                recordEvent('get_question_recommendations', {
+                    question: question,
+                    recommendations_count: getTotalRecommendationsCount(response)
+                });
+                
+            } catch (error) {
+                hideLoading();
+                showEmptyState();
+                handleAPIError(error, '学习推荐');
+            }
+        }
+
+        // 获取基于档案的推荐
+        async function getProfileRecommendations() {
+            showLoading();
+            
+            try {
+                const response = await recAPI.getRecommendationByProfile(null, currentCourseId);
+                displayProfileRecommendations(response);
+                
+                // 记录事件
+                recordEvent('get_profile_recommendations', {
+                    plan_count: response.plan ? response.plan.length : 0
+                });
+                
+            } catch (error) {
+                hideLoading();
+                showEmptyState();
+                handleAPIError(error, '学习推荐');
+            }
+        }
+
+        // 获取主题推荐
+        function getTopicRecommendations(topic) {
+            document.getElementById('question-input').value = `我想学习${topic}`;
+            getQuestionRecommendations(`我想学习${topic}`);
+        }
+
+        // 显示推荐结果
+        function displayRecommendations(recommendations, question) {
+            hideLoading();
+            
+            const container = document.getElementById('recommendations-container');
+            const grid = document.getElementById('recommendations-grid');
+            
+            // 清空现有内容
+            grid.innerHTML = '';
+            
+            // 创建推荐区域
+            const sections = [
+                { key: 'prerequisites', title: '📚 前置知识', description: '建议先学习这些基础概念', icon: '📚' },
+                { key: 'examples', title: '💡 相关实例', description: '通过实例加深理解', icon: '💡' },
+                { key: 'pitfalls', title: '⚠️ 常见误区', description: '避免这些常见的理解误区', icon: '⚠️' },
+                { key: 'next_steps', title: '🚀 进阶学习', description: '掌握后可以继续学习的内容', icon: '🚀' }
+            ];
+            
+            sections.forEach(section => {
+                const items = recommendations[section.key] || [];
+                if (items.length > 0) {
+                    const sectionElement = createRecommendationSection(section, items);
+                    grid.appendChild(sectionElement);
+                }
+            });
+            
+            container.style.display = 'block';
+            
+            // 添加动画效果
+            const sectionElements = grid.querySelectorAll('.recommendation-section');
+            sectionElements.forEach((section, index) => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    section.style.transition = 'all 0.5s ease-out';
+                    section.style.opacity = '1';
+                    section.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+        }
+
+        // 显示档案推荐结果
+        function displayProfileRecommendations(recommendations) {
+            hideLoading();
+            
+            const container = document.getElementById('recommendations-container');
+            const grid = document.getElementById('recommendations-grid');
+            
+            // 清空现有内容
+            grid.innerHTML = '';
+            
+            if (!recommendations.plan || recommendations.plan.length === 0) {
+                showEmptyState();
+                return;
+            }
+            
+            // 创建学习计划区域
+            const section = document.createElement('div');
+            section.className = 'recommendation-section';
+            section.innerHTML = `
+                <div class="section-header">
+                    <h3 class="section-title">
+                        <span>📋</span>
+                        个性化学习计划
+                    </h3>
+                    <p class="section-description">基于您的学习档案生成的推荐学习路径</p>
+                </div>
+                <div class="section-content" id="plan-content">
+                    <!-- 学习计划项将在这里显示 -->
+                </div>
+            `;
+            
+            const planContent = section.querySelector('#plan-content');
+            recommendations.plan.forEach((planItem, index) => {
+                const item = createPlanItem(planItem, index);
+                planContent.appendChild(item);
+            });
+            
+            grid.appendChild(section);
+            container.style.display = 'block';
+            
+            // 添加动画效果
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                section.style.transition = 'all 0.5s ease-out';
+                section.style.opacity = '1';
+                section.style.transform = 'translateY(0)';
+            }, 100);
+        }
+
+        // 创建推荐区域
+        function createRecommendationSection(section, items) {
+            const sectionElement = document.createElement('div');
+            sectionElement.className = 'recommendation-section';
+            
+            sectionElement.innerHTML = `
+                <div class="section-header">
+                    <h3 class="section-title">
+                        <span>${section.icon}</span>
+                        ${section.title}
+                    </h3>
+                    <p class="section-description">${section.description}</p>
+                </div>
+                <div class="section-content">
+                    ${items.map(item => createRecommendationItem(item)).join('')}
+                </div>
+            `;
+            
+            return sectionElement;
+        }
+
+        // 创建推荐项
+        function createRecommendationItem(item) {
+            const actions = item.actions || [];
+            const actionsHtml = actions.map(action => 
+                `<span class="action-tag" onclick="performAction('${action}')">${action}</span>`
+            ).join('');
+            
+            return `
+                <div class="recommendation-item">
+                    <div class="item-title">${item.kp}</div>
+                    <div class="item-description">${item.description}</div>
+                    <div class="item-actions">
+                        ${actionsHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        // 创建学习计划项
+        function createPlanItem(planItem, index) {
+            const item = document.createElement('div');
+            item.className = 'recommendation-item';
+            
+            const actions = planItem.actions || [];
+            const actionsHtml = actions.map(action => 
+                `<span class="action-tag" onclick="performAction('${action}')">${action}</span>`
+            ).join('');
+            
+            item.innerHTML = `
+                <div class="item-title">
+                    <span style="color: var(--accent-gold); margin-right: 0.5rem;">第${index + 1}步</span>
+                    ${planItem.kp}
+                </div>
+                <div class="item-description">建议的学习活动和资源</div>
+                <div class="item-actions">
+                    ${actionsHtml}
+                </div>
+            `;
+            
+            return item;
+        }
+
+        // 执行推荐动作
+        function performAction(action) {
+            if (action.includes('搜索') || action.includes('查找')) {
+                const keyword = action.replace(/搜索|查找/g, '').trim();
+                if (keyword) {
+                    localStorage.setItem('searchQuery', keyword);
+                    window.location.href = 'search.html';
+                }
+            } else if (action.includes('问答') || action.includes('提问')) {
+                const question = action.replace(/问答|提问/g, '').trim();
+                if (question) {
+                    window.location.href = `qa.html?question=${encodeURIComponent(question)}`;
+                }
+            } else {
+                showToast(`执行操作: ${action}`, 'info');
+            }
+        }
+
+        // 显示加载状态
+        function showLoading() {
+            document.getElementById('empty-state').style.display = 'none';
+            document.getElementById('recommendations-container').style.display = 'none';
+            document.getElementById('loading-recommendations').style.display = 'block';
+        }
+
+        // 隐藏加载状态
+        function hideLoading() {
+            document.getElementById('loading-recommendations').style.display = 'none';
+        }
+
+        // 显示空状态
+        function showEmptyState() {
+            document.getElementById('recommendations-container').style.display = 'none';
+            document.getElementById('empty-state').style.display = 'block';
+        }
+
+        // 计算推荐总数
+        function getTotalRecommendationsCount(recommendations) {
+            let total = 0;
+            ['prerequisites', 'examples', 'pitfalls', 'next_steps'].forEach(key => {
+                if (recommendations[key]) {
+                    total += recommendations[key].length;
+                }
+            });
+            return total;
+        }
+    </script>
+</body>
+</html>

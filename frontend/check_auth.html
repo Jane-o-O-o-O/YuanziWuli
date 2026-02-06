@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>检查认证状态</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .info {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        button {
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <h1>🔍 认证状态检查</h1>
+    
+    <div class="info">
+        <h3>LocalStorage 内容：</h3>
+        <div id="storage-info"></div>
+    </div>
+    
+    <div class="info">
+        <h3>API 测试：</h3>
+        <button onclick="testLogin()">测试登录</button>
+        <button onclick="testAuthAPI()">测试认证API</button>
+        <button onclick="clearStorage()">清除存储</button>
+        <div id="api-result"></div>
+    </div>
+
+    <script>
+        // 显示localStorage内容
+        function showStorage() {
+            const token = localStorage.getItem('access_token');
+            const role = localStorage.getItem('user_role');
+            
+            const html = `
+                <p><strong>access_token:</strong> ${token ? token.substring(0, 50) + '...' : '❌ 未找到'}</p>
+                <p><strong>user_role:</strong> ${role || '❌ 未找到'}</p>
+                <p><strong>Token长度:</strong> ${token ? token.length : 0}</p>
+            `;
+            
+            document.getElementById('storage-info').innerHTML = html;
+        }
+        
+        // 测试登录
+        async function testLogin() {
+            const resultDiv = document.getElementById('api-result');
+            resultDiv.innerHTML = '<p>登录中...</p>';
+            
+            try {
+                const response = await fetch('http://localhost:8000/api/v1/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: 'admin',
+                        password: 'admin123'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    localStorage.setItem('access_token', data.access_token);
+                    localStorage.setItem('user_role', data.role);
+                    
+                    resultDiv.innerHTML = `
+                        <div class="success">
+                            <p>✅ 登录成功！</p>
+                            <p>Token: ${data.access_token.substring(0, 50)}...</p>
+                            <p>角色: ${data.role}</p>
+                        </div>
+                    `;
+                    showStorage();
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="error">
+                            <p>❌ 登录失败</p>
+                            <p>${JSON.stringify(data)}</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="error">
+                        <p>❌ 请求失败</p>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // 测试认证API
+        async function testAuthAPI() {
+            const resultDiv = document.getElementById('api-result');
+            const token = localStorage.getItem('access_token');
+            
+            if (!token) {
+                resultDiv.innerHTML = '<div class="error"><p>❌ 未找到token，请先登录</p></div>';
+                return;
+            }
+            
+            resultDiv.innerHTML = '<p>测试中...</p>';
+            
+            try {
+                const response = await fetch('http://localhost:8000/api/v1/auth/me', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `
+                        <div class="success">
+                            <p>✅ 认证成功！</p>
+                            <p>用户: ${data.username}</p>
+                            <p>角色: ${data.role}</p>
+                            <p>ID: ${data.id}</p>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="error">
+                            <p>❌ 认证失败 (${response.status})</p>
+                            <p>${JSON.stringify(data)}</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="error">
+                        <p>❌ 请求失败</p>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // 清除存储
+        function clearStorage() {
+            localStorage.clear();
+            showStorage();
+            document.getElementById('api-result').innerHTML = '<p>✅ 存储已清除</p>';
+        }
+        
+        // 页面加载时显示
+        showStorage();
+    </script>
+</body>
+</html>

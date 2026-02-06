@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>原子物理智能课堂系统</title>
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/layout.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚛️</text></svg>">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 导航栏 -->
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-brand">
+                    <h1>⚛️ 原子物理智能课堂</h1>
+                </div>
+                <div class="nav-menu">
+                    <a href="pages/search.html" class="nav-link">知识检索</a>
+                    <a href="pages/qa.html" class="nav-link">智能问答</a>
+                    <a href="pages/recommend.html" class="nav-link">学习推荐</a>
+                    <a href="pages/profile.html" class="nav-link">学情分析</a>
+                    <a href="pages/teacher.html" class="nav-link teacher-only" style="display: none;">教师端</a>
+                </div>
+                <div class="nav-user">
+                    <!-- 未登录状态 -->
+                    <div id="login-section" class="login-section">
+                        <button id="login-btn" class="btn btn-primary btn-sm">登录</button>
+                    </div>
+                    
+                    <!-- 已登录状态 -->
+                    <div id="user-section" class="user-section" style="display: none;">
+                        <div class="user-avatar" id="user-avatar">
+                            <span id="avatar-text">U</span>
+                        </div>
+                        <div class="user-info">
+                            <span id="username" class="username">用户名</span>
+                            <span id="user-role" class="user-role">学生</span>
+                        </div>
+                        <button id="logout-btn" class="btn btn-ghost btn-sm">退出</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- 主要内容区域 -->
+        <main class="main-content">
+            <div class="container">
+                <!-- 英雄区域 -->
+                <div class="hero-section">
+                    <h2>探索原子世界的奥秘</h2>
+                    <p>基于先进RAG技术的智能问答系统，为您提供精准的原子物理学知识检索与个性化学习推荐</p>
+                    
+                    <!-- 功能卡片 -->
+                    <div class="feature-cards">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="card-icon">知识检索</div>
+                                <p class="card-text">快速搜索原子物理学相关知识点，获取精准的理论阐述</p>
+                                <a href="pages/search.html" class="btn btn-primary">开始检索</a>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="card-icon">智能问答</div>
+                                <p class="card-text">基于知识库的智能对话，提供详细解答和可靠的引用证据</p>
+                                <a href="pages/qa.html" class="btn btn-primary">开始提问</a>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="card-icon">学习推荐</div>
+                                <p class="card-text">个性化学习路径规划，智能推荐相关知识点和学习资源</p>
+                                <a href="pages/recommend.html" class="btn btn-primary">获取推荐</a>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="card-icon">学情分析</div>
+                                <p class="card-text">学习进度跟踪与薄弱点分析，助您高效掌握原子物理知识</p>
+                                <a href="pages/profile.html" class="btn btn-primary">查看分析</a>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="card-icon">知识图谱</div>
+                                <p class="card-text">可视化知识点关联网络，系统化掌握原子物理学知识体系</p>
+                                <a href="pages/knowledge-graph.html" class="btn btn-primary">探索图谱</a>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="card-icon">智能助手</div>
+                                <p class="card-text">24小时在线AI助教，随时解答疑问并提供学习建议</p>
+                                <a href="pages/assistant.html" class="btn btn-primary">咨询助手</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 快速入口 -->
+                <div class="quick-actions">
+                    <h3>热门知识点</h3>
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" onclick="quickSearch('波粒二象性')">
+                            <span>波粒二象性</span>
+                        </button>
+                        <button class="btn btn-secondary" onclick="quickSearch('原子结构')">
+                            <span>原子结构</span>
+                        </button>
+                        <button class="btn btn-secondary" onclick="quickSearch('量子数')">
+                            <span>量子数</span>
+                        </button>
+                        <button class="btn btn-secondary" onclick="quickSearch('原子光谱')">
+                            <span>原子光谱</span>
+                        </button>
+                        <button class="btn btn-secondary" onclick="quickSearch('电子自旋')">
+                            <span>电子自旋</span>
+                        </button>
+                        <button class="btn btn-secondary" onclick="quickSearch('薛定谔方程')">
+                            <span>薛定谔方程</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 页脚 -->
+        <footer class="footer">
+            <div class="container">
+                <p>&copy; 2026原子物理智能课堂系统 | 探索微观世界，启发科学思维</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- 登录模态框 -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">用户登录</h2>
+                <button class="close" type="button">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="username-input" class="form-label">用户名</label>
+                        <input type="text" id="username-input" name="username" class="form-control" 
+                               placeholder="请输入用户名" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password-input" class="form-label">密码</label>
+                        <input type="password" id="password-input" name="password" class="form-control" 
+                               placeholder="请输入密码" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="showRegister()">注册账户</button>
+                        <button type="submit" class="btn btn-primary">
+                            <span class="login-text">登录</span>
+                            <span class="loading" style="display: none;"></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 注册模态框 -->
+    <div id="register-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">用户注册</h2>
+                <button class="close" type="button">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="register-form">
+                    <div class="form-group">
+                        <label for="reg-username" class="form-label">用户名</label>
+                        <input type="text" id="reg-username" name="username" class="form-control" 
+                               placeholder="请输入用户名（3-50字符）" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-password" class="form-label">密码</label>
+                        <input type="password" id="reg-password" name="password" class="form-control" 
+                               placeholder="请输入密码（至少6位）" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="role" class="form-label">角色</label>
+                        <select id="role" name="role" class="form-control">
+                            <option value="student">学生</option>
+                            <option value="teacher">教师</option>
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="showLogin()">返回登录</button>
+                        <button type="submit" class="btn btn-primary">
+                            <span class="register-text">注册</span>
+                            <span class="loading" style="display: none;"></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 加载脚本 - 按依赖顺序加载 -->
+    <script src="assets/js/utils.js?v=4"></script>
+    <script src="assets/js/api.js?v=4"></script>
+    <script src="assets/js/auth.js?v=4"></script>
+    <script src="assets/js/event.js?v=4"></script>
+    
+    <script>
+        // 页面初始化
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('=== 页面加载完成 ===');
+            console.log('当前URL:', window.location.href);
+            console.log('API对象:', typeof api);
+            console.log('Auth对象:', typeof auth);
+            console.log('showLogin函数:', typeof showLogin);
+            
+            try {
+                // 初始化认证系统
+                console.log('开始初始化认证系统...');
+                await initAuth();
+                console.log('认证系统初始化完成');
+                
+                // 记录页面访问事件（只在用户登录时记录）
+                if (auth && auth.isAuthenticated()) {
+                    recordEvent('view_home', {});
+                }
+            } catch (error) {
+                console.error('初始化失败:', error);
+            }
+            
+            // 添加页面加载动画
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s ease-out';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 150);
+            });
+        });
+
+        // 快速搜索
+        function quickSearch(keyword) {
+            localStorage.setItem('searchQuery', keyword);
+            window.location.href = 'pages/search.html';
+        }
+    </script>
+</body>
+</html>
