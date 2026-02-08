@@ -117,3 +117,37 @@ async def search_knowledge(
     logger.info(f"转换后hits数: {len(hits)}")
     
     return SearchResponse(hits=hits)
+
+
+@router.get("/documents/{document_id}")
+async def get_document(
+    document_id: int,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """获取完整文档内容"""
+    from app.models.orm import Document
+    
+    # 查询文档
+    document = db.query(Document).filter(Document.id == document_id).first()
+    
+    if not document:
+        raise HTTPException(status_code=404, detail="文档不存在")
+    
+    # 读取文档内容
+    import os
+    parsed_path = os.path.join("backend/storage/parsed", str(document.course_id), f"{document.id}.txt")
+    
+    content = ""
+    if os.path.exists(parsed_path):
+        with open(parsed_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+    
+    return {
+        "id": document.id,
+        "filename": document.file_name,
+        "course_id": document.course_id,
+        "status": document.status,
+        "content": content,
+        "created_at": document.created_at.isoformat() if document.created_at else None
+    }

@@ -1804,3 +1804,87 @@
 2026-02-06 16:18:06,466 - app.api.v1.kb - INFO - [kb.py:104] - 第一个结果: {'chunk_id': 16964, 'score': 0.056357622146606445, 'document_id': 293, 'meta': {'course_id': '1', 'document_id': '293', 'page': 8, 'section': '第8页'}, 'snippet': '2. 原子实的极化和轨道的贯穿 -价电子与原子实\n共同之处： 最外层有一个容易脱掉的电子 \uf0de价电子\n其余电子和核形成一个紧固的团体 \uf0de原子实\n碱金属原子：带一个正电荷的原子实 +一个价电子\n(H原子： 带一个正电荷的 原子核 +一个电子 )1 221ss\n2122612p 3s ss\n212262612p 3s 3p 4s ssNa：Z=11 基态电子排布 :Li：Z=3  基态电子排布 :\nK：...'}
 2026-02-06 16:18:06,468 - app.api.v1.kb - INFO - [kb.py:117] - 转换后hits数: 10
 2026-02-06 16:18:34,034 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=search_knowledge
+2026-02-06 16:27:56,785 - app.api.v1.kb - INFO - [kb.py:94] - API搜索请求: query='什么是原子轨道？', course_id=1, top_k=10
+2026-02-06 16:27:57,519 - httpx - INFO - [_client.py:1013] - HTTP Request: POST https://api.siliconflow.cn/v1/embeddings "HTTP/1.1 200 OK"
+2026-02-06 16:27:57,535 - app.kb.vectordb - INFO - [vectordb.py:152] - 获取集合成功: chunks_1, 向量数: 1559
+2026-02-06 16:27:57,543 - app.kb.vectordb - INFO - [vectordb.py:241] - 使用embedding查询，维度: 1024, top_k: 10, where: None
+2026-02-06 16:27:57,564 - app.kb.vectordb - INFO - [vectordb.py:258] - Chroma返回结果: ids=10
+2026-02-06 16:27:57,568 - app.kb.vectordb - INFO - [vectordb.py:295] - results类型: <class 'dict'>, keys: dict_keys(['ids', 'distances', 'metadatas', 'embeddings', 'documents', 'uris', 'data'])
+2026-02-06 16:27:57,571 - app.kb.vectordb - INFO - [vectordb.py:296] - results['ids']: [['16964', '17098', '17002', '16965', '17077', '17058', '16985', '17076', '17059', '17093']]
+2026-02-06 16:27:57,573 - app.kb.vectordb - INFO - [vectordb.py:314] - 向量检索成功: 返回 10 条结果
+2026-02-06 16:27:57,575 - app.services.kb_service - INFO - [kb_service.py:269] - 知识检索完成: 查询='什么是原子轨道？', 结果数=10
+2026-02-06 16:27:57,577 - app.api.v1.kb - INFO - [kb.py:102] - kb_service返回结果数: 10
+2026-02-06 16:27:57,579 - app.api.v1.kb - INFO - [kb.py:104] - 第一个结果: {'chunk_id': 16964, 'score': 0.056357622146606445, 'document_id': 293, 'meta': {'course_id': '1', 'document_id': '293', 'page': 8, 'section': '第8页'}, 'snippet': '2. 原子实的极化和轨道的贯穿 -价电子与原子实\n共同之处： 最外层有一个容易脱掉的电子 \uf0de价电子\n其余电子和核形成一个紧固的团体 \uf0de原子实\n碱金属原子：带一个正电荷的原子实 +一个价电子\n(H原子： 带一个正电荷的 原子核 +一个电子 )1 221ss\n2122612p 3s ss\n212262612p 3s 3p 4s ssNa：Z=11 基态电子排布 :Li：Z=3  基态电子排布 :\nK：...'}
+2026-02-06 16:27:57,583 - app.api.v1.kb - INFO - [kb.py:117] - 转换后hits数: 10
+2026-02-06 16:31:56,284 - app.api.v1.kb - INFO - [kb.py:94] - API搜索请求: query='什么是原子轨道？', course_id=1, top_k=10
+2026-02-06 16:31:56,919 - httpx - INFO - [_client.py:1013] - HTTP Request: POST https://api.siliconflow.cn/v1/embeddings "HTTP/1.1 200 OK"
+2026-02-06 16:31:56,929 - app.kb.vectordb - INFO - [vectordb.py:152] - 获取集合成功: chunks_1, 向量数: 1559
+2026-02-06 16:31:56,936 - app.kb.vectordb - INFO - [vectordb.py:241] - 使用embedding查询，维度: 1024, top_k: 10, where: None
+2026-02-06 16:31:56,961 - app.kb.vectordb - INFO - [vectordb.py:258] - Chroma返回结果: ids=10
+2026-02-06 16:31:56,964 - app.kb.vectordb - INFO - [vectordb.py:295] - results类型: <class 'dict'>, keys: dict_keys(['ids', 'distances', 'metadatas', 'embeddings', 'documents', 'uris', 'data'])
+2026-02-06 16:31:56,965 - app.kb.vectordb - INFO - [vectordb.py:296] - results['ids']: [['16964', '17098', '17002', '16965', '17077', '17058', '16985', '17076', '17059', '17093']]
+2026-02-06 16:31:56,967 - app.kb.vectordb - INFO - [vectordb.py:314] - 向量检索成功: 返回 10 条结果
+2026-02-06 16:31:56,970 - app.services.kb_service - INFO - [kb_service.py:269] - 知识检索完成: 查询='什么是原子轨道？', 结果数=10
+2026-02-06 16:31:56,973 - app.api.v1.kb - INFO - [kb.py:102] - kb_service返回结果数: 10
+2026-02-06 16:31:56,976 - app.api.v1.kb - INFO - [kb.py:104] - 第一个结果: {'chunk_id': 16964, 'score': 0.056357622146606445, 'document_id': 293, 'meta': {'course_id': '1', 'document_id': '293', 'page': 8, 'section': '第8页'}, 'snippet': '2. 原子实的极化和轨道的贯穿 -价电子与原子实\n共同之处： 最外层有一个容易脱掉的电子 \uf0de价电子\n其余电子和核形成一个紧固的团体 \uf0de原子实\n碱金属原子：带一个正电荷的原子实 +一个价电子\n(H原子： 带一个正电荷的 原子核 +一个电子 )1 221ss\n2122612p 3s ss\n212262612p 3s 3p 4s ssNa：Z=11 基态电子排布 :Li：Z=3  基态电子排布 :\nK：...'}
+2026-02-06 16:31:56,978 - app.api.v1.kb - INFO - [kb.py:117] - 转换后hits数: 10
+2026-02-06 16:32:25,957 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=search_knowledge
+2026-02-06 16:32:56,264 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=switch_search_mode
+2026-02-06 19:35:35,924 - app.api.v1.kb - INFO - [kb.py:94] - API搜索请求: query='什么是原子轨道？', course_id=1, top_k=10
+2026-02-06 19:35:36,677 - httpx - INFO - [_client.py:1013] - HTTP Request: POST https://api.siliconflow.cn/v1/embeddings "HTTP/1.1 200 OK"
+2026-02-06 19:35:36,686 - app.kb.vectordb - INFO - [vectordb.py:152] - 获取集合成功: chunks_1, 向量数: 1559
+2026-02-06 19:35:36,688 - app.kb.vectordb - INFO - [vectordb.py:241] - 使用embedding查询，维度: 1024, top_k: 10, where: None
+2026-02-06 19:35:36,705 - app.kb.vectordb - INFO - [vectordb.py:258] - Chroma返回结果: ids=10
+2026-02-06 19:35:36,707 - app.kb.vectordb - INFO - [vectordb.py:295] - results类型: <class 'dict'>, keys: dict_keys(['ids', 'distances', 'metadatas', 'embeddings', 'documents', 'uris', 'data'])
+2026-02-06 19:35:36,709 - app.kb.vectordb - INFO - [vectordb.py:296] - results['ids']: [['16964', '17098', '17002', '16965', '17077', '17058', '16985', '17076', '17059', '17093']]
+2026-02-06 19:35:36,711 - app.kb.vectordb - INFO - [vectordb.py:314] - 向量检索成功: 返回 10 条结果
+2026-02-06 19:35:36,712 - app.services.kb_service - INFO - [kb_service.py:269] - 知识检索完成: 查询='什么是原子轨道？', 结果数=10
+2026-02-06 19:35:36,714 - app.api.v1.kb - INFO - [kb.py:102] - kb_service返回结果数: 10
+2026-02-06 19:35:36,716 - app.api.v1.kb - INFO - [kb.py:104] - 第一个结果: {'chunk_id': 16964, 'score': 0.056357622146606445, 'document_id': 293, 'meta': {'course_id': '1', 'document_id': '293', 'page': 8, 'section': '第8页'}, 'snippet': '2. 原子实的极化和轨道的贯穿 -价电子与原子实\n共同之处： 最外层有一个容易脱掉的电子 \uf0de价电子\n其余电子和核形成一个紧固的团体 \uf0de原子实\n碱金属原子：带一个正电荷的原子实 +一个价电子\n(H原子： 带一个正电荷的 原子核 +一个电子 )1 221ss\n2122612p 3s ss\n212262612p 3s 3p 4s ssNa：Z=11 基态电子排布 :Li：Z=3  基态电子排布 :\nK：...'}
+2026-02-06 19:35:36,718 - app.api.v1.kb - INFO - [kb.py:117] - 转换后hits数: 10
+2026-02-06 19:35:46,989 - app.api.v1.kb - INFO - [kb.py:94] - API搜索请求: query='原子的基本概念', course_id=1, top_k=10
+2026-02-06 19:35:47,486 - httpx - INFO - [_client.py:1013] - HTTP Request: POST https://api.siliconflow.cn/v1/embeddings "HTTP/1.1 200 OK"
+2026-02-06 19:35:47,498 - app.kb.vectordb - INFO - [vectordb.py:152] - 获取集合成功: chunks_1, 向量数: 1559
+2026-02-06 19:35:47,500 - app.kb.vectordb - INFO - [vectordb.py:241] - 使用embedding查询，维度: 1024, top_k: 10, where: None
+2026-02-06 19:35:47,514 - app.kb.vectordb - INFO - [vectordb.py:258] - Chroma返回结果: ids=10
+2026-02-06 19:35:47,516 - app.kb.vectordb - INFO - [vectordb.py:295] - results类型: <class 'dict'>, keys: dict_keys(['ids', 'distances', 'metadatas', 'embeddings', 'documents', 'uris', 'data'])
+2026-02-06 19:35:47,518 - app.kb.vectordb - INFO - [vectordb.py:296] - results['ids']: [['16211', '16052', '16206', '16393', '16296', '16209', '16301', '16400', '16213', '16391']]
+2026-02-06 19:35:47,519 - app.kb.vectordb - INFO - [vectordb.py:314] - 向量检索成功: 返回 10 条结果
+2026-02-06 19:35:47,521 - app.services.kb_service - INFO - [kb_service.py:269] - 知识检索完成: 查询='原子的基本概念', 结果数=10
+2026-02-06 19:35:47,523 - app.api.v1.kb - INFO - [kb.py:102] - kb_service返回结果数: 10
+2026-02-06 19:35:47,525 - app.api.v1.kb - INFO - [kb.py:104] - 第一个结果: {'chunk_id': 16211, 'score': 0.5154950320720673, 'document_id': 283, 'meta': {'course_id': '1', 'document_id': '283', 'page': 1, 'section': '第一章 原子的基本状况'}, 'snippet': '第一章 原子的基本状况'}
+2026-02-06 19:35:47,527 - app.api.v1.kb - INFO - [kb.py:117] - 转换后hits数: 10
+2026-02-06 19:36:05,964 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=search_knowledge
+2026-02-06 19:36:05,976 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=switch_search_mode
+2026-02-06 19:36:05,986 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=switch_search_mode
+2026-02-06 19:36:06,014 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=search_knowledge
+2026-02-06 19:36:06,037 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=switch_search_mode
+2026-02-06 19:37:04,434 - app.api.v1.kb - INFO - [kb.py:94] - API搜索请求: query='斯塔克效应', course_id=1, top_k=10
+2026-02-06 19:37:04,984 - httpx - INFO - [_client.py:1013] - HTTP Request: POST https://api.siliconflow.cn/v1/embeddings "HTTP/1.1 200 OK"
+2026-02-06 19:37:04,992 - app.kb.vectordb - INFO - [vectordb.py:152] - 获取集合成功: chunks_1, 向量数: 1559
+2026-02-06 19:37:04,994 - app.kb.vectordb - INFO - [vectordb.py:241] - 使用embedding查询，维度: 1024, top_k: 10, where: None
+2026-02-06 19:37:05,013 - app.kb.vectordb - INFO - [vectordb.py:258] - Chroma返回结果: ids=10
+2026-02-06 19:37:05,015 - app.kb.vectordb - INFO - [vectordb.py:295] - results类型: <class 'dict'>, keys: dict_keys(['ids', 'distances', 'metadatas', 'embeddings', 'documents', 'uris', 'data'])
+2026-02-06 19:37:05,018 - app.kb.vectordb - INFO - [vectordb.py:296] - results['ids']: [['17475', '17416', '17471', '17472', '17417', '17473', '17420', '17474', '17418', '17419']]
+2026-02-06 19:37:05,019 - app.kb.vectordb - INFO - [vectordb.py:314] - 向量检索成功: 返回 10 条结果
+2026-02-06 19:37:05,020 - app.services.kb_service - INFO - [kb_service.py:269] - 知识检索完成: 查询='斯塔克效应', 结果数=10
+2026-02-06 19:37:05,021 - app.api.v1.kb - INFO - [kb.py:102] - kb_service返回结果数: 10
+2026-02-06 19:37:05,023 - app.api.v1.kb - INFO - [kb.py:104] - 第一个结果: {'chunk_id': 17475, 'score': 0.24909508228302002, 'document_id': 301, 'meta': {'course_id': '1', 'document_id': '301', 'page': 52, 'section': '5. 斯塔克效应 – 二维钙钛矿光致内建电场导致的斯塔克效应'}, 'snippet': '5. 斯塔克效应 – 二维钙钛矿光致内建电场导致的斯塔克效应'}
+2026-02-06 19:37:05,024 - app.api.v1.kb - INFO - [kb.py:117] - 转换后hits数: 10
+2026-02-06 19:37:05,587 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=switch_search_mode
+2026-02-06 19:37:05,600 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=search_knowledge
+2026-02-06 19:37:17,141 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=view_student_profile
+2026-02-06 19:38:34,118 - app.api.v1.kb - INFO - [kb.py:94] - API搜索请求: query='什么是原子轨道？', course_id=1, top_k=10
+2026-02-06 19:38:34,567 - httpx - INFO - [_client.py:1013] - HTTP Request: POST https://api.siliconflow.cn/v1/embeddings "HTTP/1.1 200 OK"
+2026-02-06 19:38:34,593 - app.kb.vectordb - INFO - [vectordb.py:152] - 获取集合成功: chunks_1, 向量数: 1559
+2026-02-06 19:38:34,596 - app.kb.vectordb - INFO - [vectordb.py:241] - 使用embedding查询，维度: 1024, top_k: 10, where: None
+2026-02-06 19:38:34,612 - app.kb.vectordb - INFO - [vectordb.py:258] - Chroma返回结果: ids=10
+2026-02-06 19:38:34,614 - app.kb.vectordb - INFO - [vectordb.py:295] - results类型: <class 'dict'>, keys: dict_keys(['ids', 'distances', 'metadatas', 'embeddings', 'documents', 'uris', 'data'])
+2026-02-06 19:38:34,616 - app.kb.vectordb - INFO - [vectordb.py:296] - results['ids']: [['16964', '17098', '17002', '16965', '17077', '17058', '16985', '17076', '17059', '17093']]
+2026-02-06 19:38:34,618 - app.kb.vectordb - INFO - [vectordb.py:314] - 向量检索成功: 返回 10 条结果
+2026-02-06 19:38:34,620 - app.services.kb_service - INFO - [kb_service.py:269] - 知识检索完成: 查询='什么是原子轨道？', 结果数=10
+2026-02-06 19:38:34,622 - app.api.v1.kb - INFO - [kb.py:102] - kb_service返回结果数: 10
+2026-02-06 19:38:34,624 - app.api.v1.kb - INFO - [kb.py:104] - 第一个结果: {'chunk_id': 16964, 'score': 0.056357622146606445, 'document_id': 293, 'meta': {'course_id': '1', 'document_id': '293', 'page': 8, 'section': '第8页'}, 'snippet': '2. 原子实的极化和轨道的贯穿 -价电子与原子实\n共同之处： 最外层有一个容易脱掉的电子 \uf0de价电子\n其余电子和核形成一个紧固的团体 \uf0de原子实\n碱金属原子：带一个正电荷的原子实 +一个价电子\n(H原子： 带一个正电荷的 原子核 +一个电子 )1 221ss\n2122612p 3s ss\n212262612p 3s 3p 4s ssNa：Z=11 基态电子排布 :Li：Z=3  基态电子排布 :\nK：...'}
+2026-02-06 19:38:34,628 - app.api.v1.kb - INFO - [kb.py:117] - 转换后hits数: 10
+2026-02-06 19:38:43,267 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=search_knowledge
+2026-02-06 19:38:45,127 - app.services.analytics_service - INFO - [analytics_service.py:50] - 学习事件已记录: user_id=3, event_type=view_student_profile

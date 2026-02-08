@@ -1245,37 +1245,81 @@
         }
 
         // 显示结果详情
-        function showResultDetail(hit) {
+        async function showResultDetail(hit) {
+            // 创建加载中的模态框
             const modal = document.createElement('div');
             modal.className = 'modal show';
             modal.innerHTML = `
-                <div class="modal-content">
+                <div class="modal-content" style="max-width: 900px;">
                     <div class="modal-header">
-                        <h2 class="modal-title">内容详情</h2>
+                        <h2 class="modal-title">📄 文档内容</h2>
                         <button class="close" onclick="this.closest('.modal').remove()">&times;</button>
                     </div>
-                    <div class="modal-body">
-                        <div style="margin-bottom: 1rem;">
-                            <strong>相似度:</strong> ${Math.round(hit.score * 100)}%
-                        </div>
-                        <div style="margin-bottom: 1rem;">
-                            <strong>文档ID:</strong> ${hit.document_id}
-                        </div>
-                        <div style="margin-bottom: 1rem;">
-                            <strong>内容:</strong>
-                        </div>
-                        <div style="background: var(--bg-secondary); padding: 1rem; border-radius: var(--radius-md); line-height: 1.6;">
-                            ${hit.snippet}
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" onclick="copyToClipboard('${hit.snippet.replace(/'/g, "\\'")}')">复制内容</button>
-                        <button class="btn btn-primary" onclick="this.closest('.modal').remove()">关闭</button>
+                    <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                        <div class="loading-placeholder">正在加载完整文档...</div>
                     </div>
                 </div>
             `;
-            
             document.body.appendChild(modal);
+            
+            try {
+                // 获取完整文档内容
+                const response = await fetch(`${API_BASE_URL}/kb/documents/${hit.document_id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error('获取文档失败');
+                }
+                
+                const document = await response.json();
+                
+                // 更新模态框内容
+                const modalBody = modal.querySelector('.modal-body');
+                modalBody.innerHTML = `
+                    <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--border-light);">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                            <div>
+                                <h3 style="margin: 0 0 0.5rem 0; color: var(--primary-dark);">${document.filename || '文档'}</h3>
+                                <div style="color: var(--text-secondary); font-size: 0.875rem;">
+                                    <span>📄 文档ID: ${hit.document_id}</span>
+                                    <span style="margin-left: 1rem;">🎯 匹配度: ${Math.round(hit.score * 100)}%</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-secondary btn-sm" onclick="copyToClipboard(\`${document.content?.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`)">
+                                📋 复制全文
+                            </button>
+                        </div>
+                    </div>
+                    <div style="background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%); padding: 2rem; border-radius: 12px; line-height: 1.8; white-space: pre-wrap; font-family: var(--font-body); color: var(--text-primary); box-shadow: inset 0 2px 8px rgba(0,0,0,0.05);">
+                        ${document.content || hit.snippet}
+                    </div>
+                `;
+                
+            } catch (error) {
+                console.error('获取文档失败:', error);
+                // 如果获取失败，显示片段内容
+                const modalBody = modal.querySelector('.modal-body');
+                modalBody.innerHTML = `
+                    <div style="margin-bottom: 1.5rem; padding: 1rem; background: #fff3cd; border-radius: 8px; color: #856404;">
+                        ⚠️ 无法获取完整文档，显示片段内容
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <strong>相似度:</strong> ${Math.round(hit.score * 100)}%
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <strong>文档ID:</strong> ${hit.document_id}
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <strong>片段内容:</strong>
+                    </div>
+                    <div style="background: var(--bg-secondary); padding: 1.5rem; border-radius: var(--radius-md); line-height: 1.8; white-space: pre-wrap;">
+                        ${hit.snippet}
+                    </div>
+                `;
+            }
         }
     </script>
 </body>
