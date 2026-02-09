@@ -302,44 +302,6 @@
             margin-top: var(--space-sm);
         }
 
-        .citations {
-            margin-top: var(--space-md);
-            padding-top: var(--space-md);
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .message-assistant .citations {
-            border-top-color: var(--border-light);
-        }
-
-        .citation {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            margin: 0.5rem 0.5rem 0 0;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .message-assistant .citation {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            color: var(--primary-main);
-            border: 1px solid rgba(45, 90, 71, 0.2);
-        }
-
-        .citation:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(45, 90, 71, 0.2);
-        }
-
-        .message-user .citation:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
         .chat-input {
             padding: 2rem;
             background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
@@ -778,26 +740,9 @@
             const messageDiv = document.createElement('div');
             messageDiv.className = `message message-${type}`;
             
-            let citationsHtml = '';
-            if (citations && citations.length > 0) {
-                citationsHtml = '<div class="citations">';
-                citations.forEach((citation, index) => {
-                    citationsHtml += `<span class="citation" onclick="showCitation(${index})" title="${citation.snippet}">引用 ${index + 1}</span>`;
-                });
-                citationsHtml += '</div>';
-            }
-            
-            let metaHtml = '';
-            if (type === 'assistant' && confidence > 0) {
-                const confidencePercent = Math.round(confidence * 100);
-                metaHtml = `<div class="message-meta">置信度: ${confidencePercent}%</div>`;
-            }
-            
             messageDiv.innerHTML = `
                 <div class="message-content">
                     <div class="message-text">${formatMessage(content)}</div>
-                    ${citationsHtml}
-                    ${metaHtml}
                 </div>
             `;
             
@@ -831,12 +776,6 @@
         function askSuggestedQuestion(question) {
             document.getElementById('question-input').value = question;
             document.getElementById('question-form').dispatchEvent(new Event('submit'));
-        }
-
-        // 显示引用详情
-        function showCitation(index) {
-            // 这里可以实现引用详情的显示逻辑
-            showToast(`查看引用 ${index + 1} 的详细信息`, 'info');
         }
     </script>
 </body>

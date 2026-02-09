@@ -220,6 +220,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: var(--space-md);
         }
 
         .results-count {
@@ -227,10 +229,41 @@
             font-size: 0.875rem;
         }
 
+        .results-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
         .results-sort {
             display: flex;
             align-items: center;
             gap: var(--space-sm);
+        }
+
+        .pdf-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            background: linear-gradient(135deg, var(--accent-gold) 0%, #c9a961 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
+        }
+
+        .pdf-link-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+        }
+
+        .pdf-link-btn:active {
+            transform: translateY(0);
         }
 
         .results-list {
@@ -493,16 +526,17 @@
             background: white;
             border: 1px solid rgba(45, 90, 71, 0.1);
             transition: all 0.3s ease;
+            cursor: pointer;
         }
 
         .chapter-item:hover {
-            box-shadow: 0 4px 16px rgba(45, 90, 71, 0.1);
+            box-shadow: 0 4px 16px rgba(45, 90, 71, 0.15);
+            transform: translateY(-2px);
         }
 
         .chapter-header {
             padding: 1.25rem 1.5rem;
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            cursor: pointer;
             display: flex;
             align-items: center;
             gap: 1rem;
@@ -510,76 +544,20 @@
             user-select: none;
         }
 
-        .chapter-header:hover {
-            background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
-        }
-
-        .chapter-header.active {
+        .chapter-item:hover .chapter-header {
             background: linear-gradient(135deg, var(--primary-main) 0%, var(--primary-light) 100%);
             color: white;
         }
 
         .chapter-icon {
             font-size: 0.875rem;
-            transition: transform 0.3s ease;
             display: inline-block;
-        }
-
-        .chapter-header.active .chapter-icon {
-            transform: rotate(90deg);
         }
 
         .chapter-title {
             flex: 1;
             font-weight: 600;
             font-size: 1.1rem;
-        }
-
-        .chapter-count {
-            font-size: 0.875rem;
-            opacity: 0.8;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 0.25rem 0.75rem;
-            border-radius: 12px;
-        }
-
-        .chapter-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease;
-            background: white;
-        }
-
-        .chapter-content.active {
-            max-height: 2000px;
-        }
-
-        .knowledge-item {
-            padding: 1rem 1.5rem 1rem 3rem;
-            border-bottom: 1px solid rgba(45, 90, 71, 0.05);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .knowledge-item:last-child {
-            border-bottom: none;
-        }
-
-        .knowledge-item:hover {
-            background: linear-gradient(135deg, rgba(45, 90, 71, 0.05) 0%, rgba(45, 90, 71, 0.02) 100%);
-            padding-left: 3.5rem;
-        }
-
-        .kp-icon {
-            font-size: 1rem;
-        }
-
-        .kp-title {
-            font-weight: 500;
-            color: var(--primary-dark);
         }
 
         /* 响应式设计 */
@@ -706,8 +684,13 @@
                             <div class="results-count" id="results-count">
                                 找到 0 个相关结果
                             </div>
-                            <div class="results-sort">
-                                <span>搜索用时: <span id="search-time">0</span>ms</span>
+                            <div class="results-actions">
+                                <button id="related-pdf-btn" class="pdf-link-btn" style="display: none;" onclick="openRelatedPDF()">
+                                    📄 查看相关教案
+                                </button>
+                                <div class="results-sort">
+                                    <span>搜索用时: <span id="search-time">0</span>ms</span>
+                                </div>
                             </div>
                         </div>
                         <div class="results-list" id="results-list">
@@ -754,212 +737,72 @@
                         <!-- 知识点目录 -->
                         <div class="knowledge-catalog">
                             <div class="catalog-header">
-                                <h3>📖 原子物理学知识体系</h3>
+                                <h3 style="color: white;">原子物理学知识体系</h3>
                                 <p>按章节浏览所有知识点</p>
                             </div>
                             
                             <div class="catalog-chapters">
                                 <!-- 第1章 -->
-                                <div class="chapter-item">
-                                    <div class="chapter-header" onclick="toggleChapter(this)">
+                                <div class="chapter-item" onclick="viewChapter('第1章 原子的基本状况')">
+                                    <div class="chapter-header">
                                         <span class="chapter-icon">▶</span>
                                         <span class="chapter-title">第1章 原子的基本状况</span>
-                                        <span class="chapter-count">12个知识点</span>
-                                    </div>
-                                    <div class="chapter-content">
-                                        <div class="knowledge-item" onclick="viewKnowledge('原子的基本概念')">
-                                            <span class="kp-icon">📌</span>
-                                            <span class="kp-title">原子的基本概念</span>
-                                        </div>
-                                        <div class="knowledge-item" onclick="viewKnowledge('原子的组成')">
-                                            <span class="kp-icon">📌</span>
-                                            <span class="kp-title">原子的组成</span>
-                                        </div>
-                                        <div class="knowledge-item" onclick="viewKnowledge('原子核')">
-                                            <span class="kp-icon">📌</span>
-                                            <span class="kp-title">原子核</span>
-                                        </div>
-                                        <div class="knowledge-item" onclick="viewKnowledge('电子云')">
-                                            <span class="kp-icon">📌</span>
-                                            <span class="kp-title">电子云</span>
-                                        </div>
                                     </div>
                                 </div>
 
                                 <!-- 第2章 -->
-                                <div class="chapter-item">
-                                    <div class="chapter-header" onclick="toggleChapter(this)">
+                                <div class="chapter-item" onclick="viewChapter('第2章 原子的能级和辐射')">
+                                    <div class="chapter-header">
                                         <span class="chapter-icon">▶</span>
                                         <span class="chapter-title">第2章 原子的能级和辐射</span>
-                                        <span class="chapter-count">15个知识点</span>
-                                    </div>
-                                    <div class="chapter-content">
-                                        <div class="knowledge-item" onclick="viewKnowledge('能级概念')">
-                                            <span class="kp-icon">📌</span>
-                                            <span class="kp-title">能级概念</span>
-                                        </div>
-                                        <div class="knowledge-item" onclick="viewKnowledge('原子光谱')">
-                                            <span class="kp-icon">📌</span>
-                                            <span class="kp-title">原子光谱</span>
-                                        </div>
-                                        <div class="knowledge-item" onclick="viewKnowledge('玻尔理论')">
-                                            <span class="kp-icon">📌</span>
-                                            <span class="kp-title">玻尔理论</span>
-                                        </div>
-                                        <div class="knowledge-item" onclick="viewKnowledge('氢原子光谱')">
-                                            <span class="kp-icon">📌</span>
-                                            <span class="kp-title">氢原子光谱</span>
-                                        </div>
                                     </div>
                                 </div>
 
                                 <!-- 第3章 -->
-                                <div class="chapter-item">
-                                    <div class="chapter-header" onclick="toggleChapter(this)">
+                                <div class="chapter-item" onclick="viewChapter('第3章 量子力学初步')">
+                                    <div class="chapter-header">
                                         <span class="chapter-icon">▶</span>
                                         <span class="chapter-title">第3章 量子力学初步</span>
-                                        <span class="chapter-count">18个知识点</span>
-                                    </div>
-                                    <div class="chapter-content">
-                                        <div class="knowledge-item" onclick="viewKnowledge('波粒二象性')">
-                                            <span class="kp-icon">📌</span>
-                                            <span class="kp-title">波粒二象性</span>
-                                        </div>
-                                        <div class="knowledge-item" onclick="viewKnowledge('德布罗意波')">
-                                            <span class="kp-icon">📌</span>
-                                            <span class="kp-title">德布罗意波</span>
-                                        </div>
-                                        <div class="knowledge-item" onclick="viewKnowledge('薛定谔方程')">
-                                            <span class="kp-icon">📌</span>
-                                            <span class="kp-title">薛定谔方程</span>
-                                        </div>
-                                        <div class="knowledge-item" onclick="viewKnowledge('波函数')">
-                                            <span class="kp-icon">📌</span>
-                                            <span class="kp-title">波函数</span>
-                                        </div>
-                                        <div class="knowledge-item" onclick="viewKnowledge('不确定性原理')">
-                                            <span class="kp-icon">📌</span>
-                                            <span class="kp-title">不确定性原理</span>
-                                        </div>
                                     </div>
                                 </div>
 
                                 <!-- 第4章 -->
-                                <div class="chapter-item">
-                                    <div class="chapter-header" onclick="toggleChapter(this)">
+                                <div class="chapter-item" onclick="viewChapter('第4章 碱金属原子和电子自旋')">
+                                    <div class="chapter-header">
                                         <span class="chapter-icon">▶</span>
                                         <span class="chapter-title">第4章 碱金属原子和电子自旋</span>
-                                        <span class="chapter-count">10个知识点</span>
-                                    </div>
-                                    <div class="chapter-content">
-                                        <div class="knowledge-item" onclick="viewKnowledge('碱金属原子')">
-                                            <span class="kp-icon">📌</span>
-                                            <span class="kp-title">碱金属原子</span>
-                                        </div>
-                                        <div class="knowledge-item" onclick="viewKnowledge('电子自旋')">
-                                            <span class="kp-icon">📌</span>
-                                            <span class="kp-title">电子自旋</span>
-                                        </div>
-                                        <div class="knowledge-item" onclick="viewKnowledge('自旋量子数')">
-                                            <span class="kp-icon">📌</span>
-                                            <span class="kp-title">自旋量子数</span>
-                                        </div>
                                     </div>
                                 </div>
 
                                 <!-- 第5章 -->
-                                <div class="chapter-item">
-                                    <div class="chapter-header" onclick="toggleChapter(this)">
+                                <div class="chapter-item" onclick="viewChapter('第5章 多电子原子')">
+                                    <div class="chapter-header">
                                         <span class="chapter-icon">▶</span>
                                         <span class="chapter-title">第5章 多电子原子</span>
-                                        <span class="chapter-count">14个知识点</span>
-                                    </div>
-                                    <div class="chapter-content">
-                                        <div class="knowledge-item" onclick="viewKnowledge('泡利不相容原理')">
-                                            <span class="kp-icon">📌</span>
-                                            <span class="kp-title">泡利不相容原理</span>
-                                        </div>
-                                        <div class="knowledge-item" onclick="viewKnowledge('电子组态')">
-                                            <span class="kp-icon">📌</span>
-                                            <span class="kp-title">电子组态</span>
-                                        </div>
-                                        <div class="knowledge-item" onclick="viewKnowledge('洪特规则')">
-                                            <span class="kp-icon">📌</span>
-                                            <span class="kp-title">洪特规则</span>
-                                        </div>
                                     </div>
                                 </div>
 
                                 <!-- 第6章 -->
-                                <div class="chapter-item">
-                                    <div class="chapter-header" onclick="toggleChapter(this)">
+                                <div class="chapter-item" onclick="viewChapter('第6章 外场中的原子')">
+                                    <div class="chapter-header">
                                         <span class="chapter-icon">▶</span>
                                         <span class="chapter-title">第6章 外场中的原子</span>
-                                        <span class="chapter-count">11个知识点</span>
-                                    </div>
-                                    <div class="chapter-content">
-                                        <div class="knowledge-item" onclick="viewKnowledge('塞曼效应')">
-                                            <span class="kp-icon">📌</span>
-                                            <span class="kp-title">塞曼效应</span>
-                                        </div>
-                                        <div class="knowledge-item" onclick="viewKnowledge('斯塔克效应')">
-                                            <span class="kp-icon">📌</span>
-                                            <span class="kp-title">斯塔克效应</span>
-                                        </div>
-                                        <div class="knowledge-item" onclick="viewKnowledge('磁场中的原子')">
-                                            <span class="kp-icon">📌</span>
-                                            <span class="kp-title">磁场中的原子</span>
-                                        </div>
                                     </div>
                                 </div>
 
                                 <!-- 第8章 -->
-                                <div class="chapter-item">
-                                    <div class="chapter-header" onclick="toggleChapter(this)">
+                                <div class="chapter-item" onclick="viewChapter('第8章 X射线')">
+                                    <div class="chapter-header">
                                         <span class="chapter-icon">▶</span>
                                         <span class="chapter-title">第8章 X射线</span>
-                                        <span class="chapter-count">9个知识点</span>
-                                    </div>
-                                    <div class="chapter-content">
-                                        <div class="knowledge-item" onclick="viewKnowledge('X射线的产生')">
-                                            <span class="kp-icon">📌</span>
-                                            <span class="kp-title">X射线的产生</span>
-                                        </div>
-                                        <div class="knowledge-item" onclick="viewKnowledge('X射线谱')">
-                                            <span class="kp-icon">📌</span>
-                                            <span class="kp-title">X射线谱</span>
-                                        </div>
-                                        <div class="knowledge-item" onclick="viewKnowledge('康普顿效应')">
-                                            <span class="kp-icon">📌</span>
-                                            <span class="kp-title">康普顿效应</span>
-                                        </div>
                                     </div>
                                 </div>
 
                                 <!-- 第10章 -->
-                                <div class="chapter-item">
-                                    <div class="chapter-header" onclick="toggleChapter(this)">
+                                <div class="chapter-item" onclick="viewChapter('第10章 原子核')">
+                                    <div class="chapter-header">
                                         <span class="chapter-icon">▶</span>
                                         <span class="chapter-title">第10章 原子核</span>
-                                        <span class="chapter-count">13个知识点</span>
-                                    </div>
-                                    <div class="chapter-content">
-                                        <div class="knowledge-item" onclick="viewKnowledge('原子核的组成')">
-                                            <span class="kp-icon">📌</span>
-                                            <span class="kp-title">原子核的组成</span>
-                                        </div>
-                                        <div class="knowledge-item" onclick="viewKnowledge('核力')">
-                                            <span class="kp-icon">📌</span>
-                                            <span class="kp-title">核力</span>
-                                        </div>
-                                        <div class="knowledge-item" onclick="viewKnowledge('放射性')">
-                                            <span class="kp-icon">📌</span>
-                                            <span class="kp-title">放射性</span>
-                                        </div>
-                                        <div class="knowledge-item" onclick="viewKnowledge('核反应')">
-                                            <span class="kp-icon">📌</span>
-                                            <span class="kp-title">核反应</span>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1034,33 +877,121 @@
             recordEvent('switch_search_mode', { mode: mode });
         }
 
-        // 切换章节展开/收起
-        function toggleChapter(header) {
-            const content = header.nextElementSibling;
-            const isActive = header.classList.contains('active');
+        // 全局变量存储当前相关的PDF
+        let currentRelatedPDF = null;
+
+        // 检测最相关的PDF文档
+        function detectRelatedPDF(hits) {
+            const pdfBtn = document.getElementById('related-pdf-btn');
             
-            // 关闭所有其他章节
-            document.querySelectorAll('.chapter-header').forEach(h => {
-                h.classList.remove('active');
-                h.nextElementSibling.classList.remove('active');
-            });
-            
-            // 切换当前章节
-            if (!isActive) {
-                header.classList.add('active');
-                content.classList.add('active');
+            if (!hits || hits.length === 0) {
+                pdfBtn.style.display = 'none';
+                return;
+            }
+
+            // 章节关键词映射
+            const chapterKeywords = {
+                '第1章 原子的基本状况': ['原子', '基本', '状况', '组成', '电子云', '原子核'],
+                '第2章 原子的能级和辐射': ['能级', '辐射', '光谱', '玻尔', '氢原子'],
+                '第3章 量子力学初步': ['量子', '波粒二象性', '德布罗意', '薛定谔', '波函数', '不确定性'],
+                '第4章 碱金属原子和电子自旋': ['碱金属', '电子自旋', '自旋量子数'],
+                '第5章 多电子原子': ['多电子', '泡利', '电子组态', '洪特'],
+                '第6章 外场中的原子': ['外场', '塞曼', '斯塔克', '磁场'],
+                '第8章 X射线': ['X射线', '康普顿'],
+                '第10章 原子核': ['原子核', '核力', '放射性', '核反应']
+            };
+
+            const chapterPdfMap = {
+                '第1章 原子的基本状况': '第1章 原子的基本状况-含注释.pdf',
+                '第2章 原子的能级和辐射': '第2章 原子的能级和辐射-含注释.pdf',
+                '第3章 量子力学初步': '第3章 量子力学初步-含注释.pdf',
+                '第4章 碱金属原子和电子自旋': '第4章 碱金属原子和电子自旋-含注释.pdf',
+                '第5章 多电子原子': '第5章 多电子原子-含注释.pdf',
+                '第6章 外场中的原子': '第6章 外场中的原子-含注释.pdf',
+                '第8章 X射线': '第8章 X射线-含注释.pdf',
+                '第10章 原子核': '第10章 原子核-含注释.pdf'
+            };
+
+            // 获取搜索结果的文本内容
+            const resultText = hits.map(hit => hit.snippet).join(' ');
+
+            // 计算每个章节的匹配分数
+            let bestMatch = null;
+            let bestScore = 0;
+
+            for (const [chapter, keywords] of Object.entries(chapterKeywords)) {
+                let score = 0;
+                keywords.forEach(keyword => {
+                    const regex = new RegExp(keyword, 'gi');
+                    const matches = resultText.match(regex);
+                    if (matches) {
+                        score += matches.length;
+                    }
+                });
+
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestMatch = chapter;
+                }
+            }
+
+            // 如果找到匹配的章节，显示按钮
+            if (bestMatch && bestScore > 0) {
+                currentRelatedPDF = {
+                    chapter: bestMatch,
+                    filename: chapterPdfMap[bestMatch]
+                };
+                pdfBtn.style.display = 'inline-flex';
+            } else {
+                pdfBtn.style.display = 'none';
             }
         }
 
-        // 查看知识点
-        function viewKnowledge(keyword) {
-            // 切换到搜索模式
-            switchMode('search');
+        // 打开相关PDF
+        function openRelatedPDF() {
+            if (!currentRelatedPDF) {
+                alert('未找到相关的PDF文档');
+                return;
+            }
+
+            const pdfPath = `http://localhost:8000/materials/${encodeURIComponent(currentRelatedPDF.filename)}`;
+            window.open(pdfPath, '_blank');
             
-            // 执行搜索
-            setTimeout(() => {
-                performSearch(keyword);
-            }, 300);
+            // 记录事件
+            recordEvent('view_related_pdf', { 
+                chapter: currentRelatedPDF.chapter, 
+                pdf: currentRelatedPDF.filename 
+            });
+        }
+
+        // 查看章节完整内容
+        function viewChapter(chapterTitle) {
+            // 章节标题到PDF文件名的映射
+            const chapterPdfMap = {
+                '第1章 原子的基本状况': '第1章 原子的基本状况-含注释.pdf',
+                '第2章 原子的能级和辐射': '第2章 原子的能级和辐射-含注释.pdf',
+                '第3章 量子力学初步': '第3章 量子力学初步-含注释.pdf',
+                '第4章 碱金属原子和电子自旋': '第4章 碱金属原子和电子自旋-含注释.pdf',
+                '第5章 多电子原子': '第5章 多电子原子-含注释.pdf',
+                '第6章 外场中的原子': '第6章 外场中的原子-含注释.pdf',
+                '第8章 X射线': '第8章 X射线-含注释.pdf',
+                '第10章 原子核': '第10章 原子核-含注释.pdf'
+            };
+            
+            const pdfFileName = chapterPdfMap[chapterTitle];
+            if (pdfFileName) {
+                // 通过后端API访问PDF文件
+                const pdfPath = `http://localhost:8000/materials/${encodeURIComponent(pdfFileName)}`;
+                
+                // 在新窗口打开PDF
+                window.open(pdfPath, '_blank');
+                
+                // 记录事件
+                recordEvent('view_chapter_pdf', { chapter: chapterTitle, pdf: pdfFileName });
+            } else {
+                console.error('未找到对应的PDF文件:', chapterTitle);
+                alert('抱歉，未找到该章节的PDF文件');
+            }
         }
 
         // 搜索表单提交
@@ -1128,6 +1059,7 @@
             const resultsCount = document.getElementById('results-count');
             const searchTimeSpan = document.getElementById('search-time');
             const resultsList = document.getElementById('results-list');
+            const pdfBtn = document.getElementById('related-pdf-btn');
             
             loadingResults.style.display = 'none';
             
@@ -1142,6 +1074,9 @@
             // 更新结果统计
             resultsCount.textContent = `找到 ${hits.length} 个相关结果`;
             searchTimeSpan.textContent = searchTime;
+            
+            // 检测最相关的PDF文档
+            detectRelatedPDF(hits);
             
             // 清空结果列表
             resultsList.innerHTML = '';

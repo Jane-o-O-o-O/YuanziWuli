@@ -69,6 +69,11 @@ app.include_router(api_router, prefix="/api/v1")
 # 静态文件服务 (用于开发测试)
 app.mount("/static", StaticFiles(directory="../frontend"), name="static")
 
+# 教案文件服务
+import os
+if os.path.exists("../原子物理学-教案"):
+    app.mount("/materials", StaticFiles(directory="../原子物理学-教案"), name="materials")
+
 @app.get("/")
 async def root():
     return {"message": "原子物理智能课堂系统 API", "version": "1.0.0"}
